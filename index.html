@@ -168,10 +168,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-06-27 12:26:24 / 修改时间：15:07:47" itemprop="dateCreated datePublished" datetime="2024-06-27T12:26:24+08:00">2024-06-27</time>
+              <time title="创建时间：2024-06-27 12:26:24" itemprop="dateCreated datePublished" datetime="2024-06-27T12:26:24+08:00">2024-06-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-08 20:52:20" itemprop="dateModified" datetime="2024-07-08T20:52:20+08:00">2024-07-08</time>
+              </span>
 
           
 
@@ -221,7 +227,7 @@
 <p>(line4: left &lt; right,nums[5] targe&#x3D;5用例不通过；line 9、13，条件最初写的是没有+1-1，手动分析也是无法正常退出的) </p>
 <p>写二分法，区间的定义一般为两种，左闭右闭即[left, right]，或者左闭右开即[left, right)。</p>
 <p>下面我用这两种区间的定义分别讲解两种不同的二分写法</p>
-<h3 id="二分第一种写法"><a href="#二分第一种写法" class="headerlink" title="二分第一种写法"></a>二分第一种写法</h3><p>第一种写法，我们定义 target 是在一个在左闭右闭的区间里，<strong>也就是[left, right] （这个很重要非常重要）</strong>。</p>
+<h2 id="二分第一种写法"><a href="#二分第一种写法" class="headerlink" title="二分第一种写法"></a>二分第一种写法</h2><p>第一种写法，我们定义 target 是在一个在左闭右闭的区间里，<strong>也就是[left, right] （这个很重要非常重要）</strong>。</p>
 <p>区间的定义这就决定了二分法的代码应该如何写，<strong>因为定义target在[left, right]区间，所以有如下两点：</strong></p>
 <ul>
 <li>while (left &lt;&#x3D; right) 要使用 &lt;&#x3D; ，因为left &#x3D;&#x3D; right是有意义的，所以使用 &lt;&#x3D;</li>
@@ -229,7 +235,7 @@
 </ul>
 <p>例如在数组：1,2,3,4,7,9,10中查找元素2，如图所示：</p>
 <p><img src="/images/array/image-6.png" alt="alt text"></p>
-<h3 id="二分第二种写法"><a href="#二分第二种写法" class="headerlink" title="二分第二种写法"></a>二分第二种写法</h3><p>如果说定义 target 是在一个在左闭右开的区间里，也就是[left, right) ，那么二分法的边界处理方式则截然不同。</p>
+<h2 id="二分第二种写法"><a href="#二分第二种写法" class="headerlink" title="二分第二种写法"></a>二分第二种写法</h2><p>如果说定义 target 是在一个在左闭右开的区间里，也就是[left, right) ，那么二分法的边界处理方式则截然不同。</p>
 <p>有如下两点：</p>
 <ul>
 <li>while (left &lt; right)，这里使用 &lt; ,因为left &#x3D;&#x3D; right在区间[left, right)是没有意义的</li>
@@ -237,9 +243,51 @@
 </ul>
 <p><img src="/images/array/image-7.png" alt="alt text"></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 版本二</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> right = nums.<span class="built_in">size</span>(); <span class="comment">// 定义target在左闭右开的区间里，即：[left, right)</span></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123; <span class="comment">// 因为left == right的时候，在[left, right)是无效的空间，所以使用 &lt;</span></span><br><span class="line">            <span class="type">int</span> middle = left + ((right - left) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (nums[middle] &gt; target) &#123;</span><br><span class="line">                right = middle; <span class="comment">// target 在左区间，在[left, middle)中</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[middle] &lt; target) &#123;</span><br><span class="line">                left = middle + <span class="number">1</span>; <span class="comment">// target 在右区间，在[middle + 1, right)中</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; <span class="comment">// nums[middle] == target</span></span><br><span class="line">                <span class="keyword">return</span> middle; <span class="comment">// 数组中找到目标值，直接返回下标</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 未找到目标值</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;; </span><br></pre></td></tr></table></figure>
+<h1 id="移除元素"><a href="#移除元素" class="headerlink" title="移除元素"></a>移除元素</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/">力扣题目链接</a></p>
+<p>给你一个数组 nums 和一个值 val，你需要<strong>原地</strong>移除所有数值等于 val 的元素，并返回移除后数组的新长度。</p>
+<p>不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并<strong>原地</strong>修改输入数组。</p>
+<p>元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。</p>
+<p>示例 1: 给定 nums &#x3D; [3,2,2,3], val &#x3D; 3, 函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。 你不需要考虑数组中超出新长度后面的元素。</p>
+<p>示例 2: 给定 nums &#x3D; [0,1,2,2,3,0,4,2], val &#x3D; 2, 函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。</p>
+<p><strong>你不需要考虑数组中超出新长度后面的元素。</strong></p>
+<h2 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h2><p>这个题目暴力的解法就是两层for循环，一个for循环遍历数组元素 ，第二个for循环更新数组。</p>
+<p><img src="/images/array/%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0-%E6%9A%B4%E5%8A%9B%E8%A7%A3%E6%B3%95.gif" alt="暴力解法"></p>
+<p>很明显暴力解法的时间复杂度是O(n^2)，这道题目暴力解法在leetcode上是可以过的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> numsSize, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j, count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; numsSize - count) &#123; <span class="comment">// 减去count是因为数组的大小随着元素的移除而减小</span></span><br><span class="line">        <span class="keyword">if</span> (nums[i] == val) &#123;</span><br><span class="line">            <span class="keyword">for</span> (j = i; j &lt; numsSize - <span class="number">1</span>; j++) &#123; <span class="comment">// 减去1是因为我们要移动到最后一个元素之前的所有元素</span></span><br><span class="line">                nums[j] = nums[j + <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            count++; <span class="comment">// 每移除一个元素，count增加1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            i++; <span class="comment">// 只有当当前元素不是val时，才递增i</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> numsSize - count; <span class="comment">// 返回新数组的长度</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面是自己写的初试版本</span></span><br><span class="line"><span class="comment">/* int removeElement(int* nums, int numsSize, int val) &#123;</span></span><br><span class="line"><span class="comment">    int i,j,count = 0;</span></span><br><span class="line"><span class="comment">    while( i &lt; numsSize )&#123;</span></span><br><span class="line"><span class="comment">        if( nums[i] == val)&#123;</span></span><br><span class="line"><span class="comment">            for( j = i ; j &lt; numsSize ; j++)&#123;</span></span><br><span class="line"><span class="comment">                nums[j] = nums[j+1];</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">            i++;</span></span><br><span class="line"><span class="comment">            count++;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    return numsSize - count;</span></span><br><span class="line"><span class="comment">&#125; */</span></span><br></pre></td></tr></table></figure>
 
-<p>​</p>
-<p>​</p>
+<ul>
+<li>时间复杂度：O(n^2)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<h2 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h2><p>双指针法（快慢指针法）： 通过一个快指针和慢指针在一个for循环下完成两个for循环的工作。</p>
+<p>定义快慢指针</p>
+<ul>
+<li>快指针：寻找新数组的元素，新数组就是不含有目标元素的数组</li>
+<li>慢指针：指向更新，新数组下标的位置</li>
+</ul>
+<p>很多同学这道题目做的很懵，就是不理解 快慢指针究竟都是什么含义，所以一定要明确含义，后面的思路就更容易理解了。</p>
+<p>删除过程如下：</p>
+<p><img src="/images/array/%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0-%E5%8F%8C%E6%8C%87%E9%92%88%E6%B3%95.gif" alt="双指针法"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">removeElement</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> numsSize, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> fastindex = <span class="number">0</span>, slowindex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (fastindex &lt; numsSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[fastindex] != val) &#123;</span><br><span class="line">            nums[slowindex++] = nums[fastindex];</span><br><span class="line">        &#125;</span><br><span class="line">        fastindex++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> slowindex; <span class="comment">// 直接返回slowindex，它表示新数组的长度</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>双指针法（快慢指针法）在数组和链表的操作中是非常常见的，很多考察数组、链表、字符串等操作的面试题，都使用双指针法。</strong></p>
+<p>注意这些实现方法并没有改变元素的相对位置！</p>
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<h1 id="有序数组的平方"><a href="#有序数组的平方" class="headerlink" title="有序数组的平方"></a>有序数组的平方</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/squares-of-a-sorted-array/">力扣题目链接</a></p>
+<p>给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方组成的新数组，要求也按 非递减顺序 排序。</p>
+<p>示例 1：</p>
+<p>输入：nums &#x3D; [-4,-1,0,3,10]</p>
+<p>输出：[0,1,9,16,100]</p>
+<p>解释：平方后，数组变为 [16,1,0,9,100]，排序后，数组变为 [0,1,9,16,100]</p>
+<p>示例 2：</p>
+<p>输入：nums &#x3D; [-7,-3,2,3,11]</p>
+<p>输出：[4,9,9,49,121]</p>
+<h2 id="暴力排序"><a href="#暴力排序" class="headerlink" title="暴力排序"></a>暴力排序</h2><p>最直观的想法，莫过于：每个数平方之后，排个序，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sortedSquares</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; A.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            A[i] *= A[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">sort</span>(A.<span class="built_in">begin</span>(), A.<span class="built_in">end</span>()); <span class="comment">// 快速排序</span></span><br><span class="line">        <span class="keyword">return</span> A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个时间复杂度是 O(n + nlogn)， 可以说是O(nlogn)的时间复杂度，但为了和下面双指针法算法时间复杂度有鲜明对比，我记为 O(n + nlog n)。<br>​</p>
 
       
     </div>
