@@ -349,6 +349,154 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/13/%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">泛型编程&STL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-13 22:08:57" itemprop="dateCreated datePublished" datetime="2025-03-13T22:08:57+08:00">2025-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-30 17:55:44" itemprop="dateModified" datetime="2025-03-30T17:55:44+08:00">2025-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><h2 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h2><p>模板不可直接使用，只是一个框架<br>通用但不万能</p>
+<p>C++提供函数模板和类模板</p>
+<p><code>template&lt;typename T&gt; 函数声明或定义</code></p>
+<p>比如需要一个简单的交换两数的功能，对于不同的数据类型，我们需要写不同的函数，无数的数据类型难道需要都写各自的函数？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename T&gt;</span><br><span class="line">void mySwap(T &amp;a, T &amp;b)&#123;</span><br><span class="line">    交换</span><br><span class="line">&#125;</span><br><span class="line">mySwap(a,b);//编译器自动推导</span><br><span class="line">mySwap&lt;int&gt;(a, b);//显示指定</span><br></pre></td></tr></table></figure>
+
+<p>自动推导时，必须推导出一致的数据类型T</p>
+<p>模板必须要确定出T的数据类型才能使用</p>
+<p><code>template&lt;class T&gt;</code><br>可以写函数模板时用typename，类模板用class，也可以都用class，区别不大风格问题</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;<span class="comment">//不同的参数类型</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printValues</span><span class="params">(T arg1, U arg2)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value of T: &quot;</span> &lt;&lt; arg1 &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value of U: &quot;</span> &lt;&lt; arg2 &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">5</span>;</span><br><span class="line">    <span class="type">double</span> d = <span class="number">3.14</span>;</span><br><span class="line">    <span class="built_in">printValues</span>(i, d); <span class="comment">// 这里 T 将被推导为 int，U 将被推导为 double</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>普通函数调用时可以发生自动类型转换（隐式类型转换）</p>
+<p>函数模板：自动推导时不会发生自动类型推导，显示指定的方式可以</p>
+<p>普通函数与函数模板可以发生函数重载，优先级：</p>
+<ol>
+<li>如果函数模板和普通函数都可以实现，优先调用普通函数</li>
+<li>可以通过空模板参数列表来强制调用函数模板，空参数列表即是&lt;&gt;</li>
+<li>函数模板也可以发生重载</li>
+<li>如果函数模板可以产生更好的匹配,优先调用函数模板，<br>比如同一个打印功能，用Print(int a, int b)和模板函数实现，当参数是int时优先调用普通函数，若是char则调用模板</li>
+</ol>
+<p>局限性：比如说上面的简单交换函数不能传数组或者自定义数据类型</p>
+<p>解决方法是特定数据用具体化方式做特殊实现,例如下面的自定义数据类型person无法使用模板函数比较，使用<code>Ftemplate&lt;&gt;</code>重载，并使用具体的数据类型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//利用具体化Person的版本实现代码，具体化优先调用</span></span><br><span class="line">Ftemplate&lt;&gt;<span class="function"><span class="type">bool</span> <span class="title">myCompare</span><span class="params">(Person &amp;pl,Person &amp;p2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pl.m Name == p2.m Name &amp;&amp; pl.m Age == p2.m Age)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h2><p>与函数模板基本一致</p>
+<p>区别：</p>
+<ol>
+<li>类模板没有自动类型推导，必须显示指定类型</li>
+<li>参数列表可以有默认参数，函数不能有<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">NameType</span>, <span class="keyword">class</span> <span class="title class_">AgeType</span> = <span class="type">int</span>)<span class="comment">//默认为int</span></span><br><span class="line"><span class="keyword">class</span> Person&#123;</span><br><span class="line">    <span class="keyword">public</span>:<span class="built_in">Person</span> (NameType name, AgeType age)</span><br><span class="line">    <span class="keyword">this</span>-&gt;m Name = name;<span class="keyword">this</span>-&gt;m Age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+其实也很合理，类一般比较复杂，自动推导容易出错，这些规定都是方便编程而有。类模板的操作更符合直觉，自动推导感觉用处不大，而且更不容易看懂，所以可以无论是函数模板还是类模板都用类模板来写</li>
+</ol>
+<h2 id="成员的创建"><a href="#成员的创建" class="headerlink" title="成员的创建"></a>成员的创建</h2><ul>
+<li>一开始无法确定数据类型，所以类模板在调用时创建成员，普通函数可以在一开始就创建成员</li>
+</ul>
+<h2 id="类模板对象做函数参数"><a href="#类模板对象做函数参数" class="headerlink" title="类模板对象做函数参数"></a>类模板对象做函数参数</h2><p>类模板实例化出的对象，想函数传参的方式</p>
+<ol>
+<li>指定传入类型 –直接显示对象的数据类型</li>
+<li>参数模板化 — 将对象中的参数变为模板进行传递</li>
+<li>整个类模板化 – 将这个对象类型 模板化进行传递</li>
+</ol>
+<h2 id="类模板与继承"><a href="#类模板与继承" class="headerlink" title="类模板与继承"></a>类模板与继承</h2><ul>
+<li>当子类继承的父类是一个类模板时，子类在声明的时候，要指定出父类中T的类型</li>
+<li>如果不指定，编译器无法给子类分配内存</li>
+<li>如果想灵活指定出父类中T的类型，子类也需变为类模板<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Tl</span>, <span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son2</span> :<span class="keyword">public</span> Base&lt;T2&gt;&#123;<span class="comment">//base父类是一个类模板</span></span><br><span class="line">    T1 obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="类模板成员函数类外实现"><a href="#类模板成员函数类外实现" class="headerlink" title="类模板成员函数类外实现"></a>类模板成员函数类外实现</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Tl</span>, <span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br><span class="line">Person&lt;T1, T2&gt;::<span class="built_in">Person</span>(Tl name, T2 age)&#123;&#125;<span class="comment">//作用域前面也要加上模板类型参数泪飙</span></span><br></pre></td></tr></table></figure>
+<h2 id="类模板分文件编写"><a href="#类模板分文件编写" class="headerlink" title="类模板分文件编写"></a>类模板分文件编写</h2><p>类模板中成员函数创建时机是在调用阶段，导致分文件编写时链接不到，具体解释：</p>
+<p>模板类直到其类型参数被具体化时才会被实例化。这意味着如果模板类的成员函数在源文件中定义，并且在头文件中没有显式地实例化，那么在编译时可能不会生成对应的机器码。</p>
+<p>链接器在链接阶段寻找的是已经编译好的机器码，如果由于模板实例化未发生而导致某些代码没有被编译，那么链接器将找不到这些实例化的成员函数的实现，从而报错。</p>
+<p>解决方式1:直接包含.cpp源文件（不常用）</p>
+<p>解决方式2:将声明和实现写到同一个文件中，并更改后缀名为.hpp，hpp是约定的名称，并不是强制</p>
+<p>解决方式3:显式实例化：在源文件中显式实例化模板类，然后在其他文件中包含这个源文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyTemplate.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyTemplate.hpp&quot;</span></span></span><br><span class="line"><span class="keyword">template</span> <span class="keyword">class</span> <span class="title class_">MyTemplate</span>&lt;<span class="type">int</span>&gt;; <span class="comment">// 显式实例化</span></span><br></pre></td></tr></table></figure>
+
+<p>分离编译和链接技术：例如使用C++11标准引入的extern template声明，可以避免在多个编译单元中重复实例化同一个模板。</p>
+<h2 id="类模板与友元"><a href="#类模板与友元" class="headerlink" title="类模板与友元"></a>类模板与友元</h2><p>全局函数类内实现:直接在类内声明友元即可</p>
+<p>全局函数类外实现:需要提前让编译器知道全局函数的存在（挺麻烦的，并且暂时不知道有啥用）（新版C++在这方面简化了很多。。。）</p>
+<h2 id="实现自定义容器"><a href="#实现自定义容器" class="headerlink" title="实现自定义容器"></a>实现自定义容器</h2><p>通用数组类：</p>
+<ul>
+<li><p>可以对内置数据类型以及自定义数据类型的数据进行存储</p>
+</li>
+<li><p>将数组中的数据存储到堆区</p>
+</li>
+<li><p>构造函数中可以传入数组的容量</p>
+</li>
+<li><p>提供对应的拷贝构造函数以及opirator&#x3D;防止浅拷贝问题</p>
+</li>
+<li><p>提供尾插法和尾删法对数组中的数据进行增加和制除</p>
+</li>
+<li><p>可以通过下标的方式访问数组中的元素可以获取数组中当前元素个数和数组的容量</p>
+</li>
+<li><p>容器类中应该有私有变量：数组地址、容量、当前大小</p>
+</li>
+<li><p>方法：构造函数、拷贝构造、利用下表访问数组中的元素、尾插法、尾删法、获取数组容量、获取数组大小</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -625,154 +773,6 @@ int main(void) &#123;
 <h2 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h2><ul>
 <li>释放动态数据必须用<code>delete[]</code>，使用智能指针管理动态数组时也必须指定时数组，例如<code>unique_ptr&lt;int []&gt;</code>，才能正确释放内存，并且此时<code>.</code>，<code>-&gt;</code>的操作也没有意义，与普通指针类似使用up[i]来访问数组元素。</li>
 <li>shared_ptr不支持管理动态数组，若使用则需要自定义一个删除器，并且shared_ptr没有[]操作，无法访问数组元素，此时若想访问数组元素，则需要使用get()来获取该地址的一个普通指针（注意只使用该指针，不要delete或者使用该指针的值初始化其他指针）</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Song Wei">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Song Wei's blog!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/13/%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">泛型编程&STL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-03-13 22:08:57" itemprop="dateCreated datePublished" datetime="2025-03-13T22:08:57+08:00">2025-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-30 17:55:44" itemprop="dateModified" datetime="2025-03-30T17:55:44+08:00">2025-03-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><h2 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h2><p>模板不可直接使用，只是一个框架<br>通用但不万能</p>
-<p>C++提供函数模板和类模板</p>
-<p><code>template&lt;typename T&gt; 函数声明或定义</code></p>
-<p>比如需要一个简单的交换两数的功能，对于不同的数据类型，我们需要写不同的函数，无数的数据类型难道需要都写各自的函数？</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename T&gt;</span><br><span class="line">void mySwap(T &amp;a, T &amp;b)&#123;</span><br><span class="line">    交换</span><br><span class="line">&#125;</span><br><span class="line">mySwap(a,b);//编译器自动推导</span><br><span class="line">mySwap&lt;int&gt;(a, b);//显示指定</span><br></pre></td></tr></table></figure>
-
-<p>自动推导时，必须推导出一致的数据类型T</p>
-<p>模板必须要确定出T的数据类型才能使用</p>
-<p><code>template&lt;class T&gt;</code><br>可以写函数模板时用typename，类模板用class，也可以都用class，区别不大风格问题</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;<span class="comment">//不同的参数类型</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printValues</span><span class="params">(T arg1, U arg2)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value of T: &quot;</span> &lt;&lt; arg1 &lt;&lt; std::endl;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Value of U: &quot;</span> &lt;&lt; arg2 &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">5</span>;</span><br><span class="line">    <span class="type">double</span> d = <span class="number">3.14</span>;</span><br><span class="line">    <span class="built_in">printValues</span>(i, d); <span class="comment">// 这里 T 将被推导为 int，U 将被推导为 double</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>普通函数调用时可以发生自动类型转换（隐式类型转换）</p>
-<p>函数模板：自动推导时不会发生自动类型推导，显示指定的方式可以</p>
-<p>普通函数与函数模板可以发生函数重载，优先级：</p>
-<ol>
-<li>如果函数模板和普通函数都可以实现，优先调用普通函数</li>
-<li>可以通过空模板参数列表来强制调用函数模板，空参数列表即是&lt;&gt;</li>
-<li>函数模板也可以发生重载</li>
-<li>如果函数模板可以产生更好的匹配,优先调用函数模板，<br>比如同一个打印功能，用Print(int a, int b)和模板函数实现，当参数是int时优先调用普通函数，若是char则调用模板</li>
-</ol>
-<p>局限性：比如说上面的简单交换函数不能传数组或者自定义数据类型</p>
-<p>解决方法是特定数据用具体化方式做特殊实现,例如下面的自定义数据类型person无法使用模板函数比较，使用<code>Ftemplate&lt;&gt;</code>重载，并使用具体的数据类型</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//利用具体化Person的版本实现代码，具体化优先调用</span></span><br><span class="line">Ftemplate&lt;&gt;<span class="function"><span class="type">bool</span> <span class="title">myCompare</span><span class="params">(Person &amp;pl,Person &amp;p2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pl.m Name == p2.m Name &amp;&amp; pl.m Age == p2.m Age)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h2><p>与函数模板基本一致</p>
-<p>区别：</p>
-<ol>
-<li>类模板没有自动类型推导，必须显示指定类型</li>
-<li>参数列表可以有默认参数，函数不能有<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">NameType</span>, <span class="keyword">class</span> <span class="title class_">AgeType</span> = <span class="type">int</span>)<span class="comment">//默认为int</span></span><br><span class="line"><span class="keyword">class</span> Person&#123;</span><br><span class="line">    <span class="keyword">public</span>:<span class="built_in">Person</span> (NameType name, AgeType age)</span><br><span class="line">    <span class="keyword">this</span>-&gt;m Name = name;<span class="keyword">this</span>-&gt;m Age = age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-其实也很合理，类一般比较复杂，自动推导容易出错，这些规定都是方便编程而有。类模板的操作更符合直觉，自动推导感觉用处不大，而且更不容易看懂，所以可以无论是函数模板还是类模板都用类模板来写</li>
-</ol>
-<h2 id="成员的创建"><a href="#成员的创建" class="headerlink" title="成员的创建"></a>成员的创建</h2><ul>
-<li>一开始无法确定数据类型，所以类模板在调用时创建成员，普通函数可以在一开始就创建成员</li>
-</ul>
-<h2 id="类模板对象做函数参数"><a href="#类模板对象做函数参数" class="headerlink" title="类模板对象做函数参数"></a>类模板对象做函数参数</h2><p>类模板实例化出的对象，想函数传参的方式</p>
-<ol>
-<li>指定传入类型 –直接显示对象的数据类型</li>
-<li>参数模板化 — 将对象中的参数变为模板进行传递</li>
-<li>整个类模板化 – 将这个对象类型 模板化进行传递</li>
-</ol>
-<h2 id="类模板与继承"><a href="#类模板与继承" class="headerlink" title="类模板与继承"></a>类模板与继承</h2><ul>
-<li>当子类继承的父类是一个类模板时，子类在声明的时候，要指定出父类中T的类型</li>
-<li>如果不指定，编译器无法给子类分配内存</li>
-<li>如果想灵活指定出父类中T的类型，子类也需变为类模板<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Tl</span>, <span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son2</span> :<span class="keyword">public</span> Base&lt;T2&gt;&#123;<span class="comment">//base父类是一个类模板</span></span><br><span class="line">    T1 obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="类模板成员函数类外实现"><a href="#类模板成员函数类外实现" class="headerlink" title="类模板成员函数类外实现"></a>类模板成员函数类外实现</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Tl</span>, <span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br><span class="line">Person&lt;T1, T2&gt;::<span class="built_in">Person</span>(Tl name, T2 age)&#123;&#125;<span class="comment">//作用域前面也要加上模板类型参数泪飙</span></span><br></pre></td></tr></table></figure>
-<h2 id="类模板分文件编写"><a href="#类模板分文件编写" class="headerlink" title="类模板分文件编写"></a>类模板分文件编写</h2><p>类模板中成员函数创建时机是在调用阶段，导致分文件编写时链接不到，具体解释：</p>
-<p>模板类直到其类型参数被具体化时才会被实例化。这意味着如果模板类的成员函数在源文件中定义，并且在头文件中没有显式地实例化，那么在编译时可能不会生成对应的机器码。</p>
-<p>链接器在链接阶段寻找的是已经编译好的机器码，如果由于模板实例化未发生而导致某些代码没有被编译，那么链接器将找不到这些实例化的成员函数的实现，从而报错。</p>
-<p>解决方式1:直接包含.cpp源文件（不常用）</p>
-<p>解决方式2:将声明和实现写到同一个文件中，并更改后缀名为.hpp，hpp是约定的名称，并不是强制</p>
-<p>解决方式3:显式实例化：在源文件中显式实例化模板类，然后在其他文件中包含这个源文件</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyTemplate.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyTemplate.hpp&quot;</span></span></span><br><span class="line"><span class="keyword">template</span> <span class="keyword">class</span> <span class="title class_">MyTemplate</span>&lt;<span class="type">int</span>&gt;; <span class="comment">// 显式实例化</span></span><br></pre></td></tr></table></figure>
-
-<p>分离编译和链接技术：例如使用C++11标准引入的extern template声明，可以避免在多个编译单元中重复实例化同一个模板。</p>
-<h2 id="类模板与友元"><a href="#类模板与友元" class="headerlink" title="类模板与友元"></a>类模板与友元</h2><p>全局函数类内实现:直接在类内声明友元即可</p>
-<p>全局函数类外实现:需要提前让编译器知道全局函数的存在（挺麻烦的，并且暂时不知道有啥用）（新版C++在这方面简化了很多。。。）</p>
-<h2 id="实现自定义容器"><a href="#实现自定义容器" class="headerlink" title="实现自定义容器"></a>实现自定义容器</h2><p>通用数组类：</p>
-<ul>
-<li><p>可以对内置数据类型以及自定义数据类型的数据进行存储</p>
-</li>
-<li><p>将数组中的数据存储到堆区</p>
-</li>
-<li><p>构造函数中可以传入数组的容量</p>
-</li>
-<li><p>提供对应的拷贝构造函数以及opirator&#x3D;防止浅拷贝问题</p>
-</li>
-<li><p>提供尾插法和尾删法对数组中的数据进行增加和制除</p>
-</li>
-<li><p>可以通过下标的方式访问数组中的元素可以获取数组中当前元素个数和数组的容量</p>
-</li>
-<li><p>容器类中应该有私有变量：数组地址、容量、当前大小</p>
-</li>
-<li><p>方法：构造函数、拷贝构造、利用下表访问数组中的元素、尾插法、尾删法、获取数组容量、获取数组大小</p>
-</li>
 </ul>
 
       
