@@ -151,6 +151,559 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/07/STM32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/11/07/STM32/" class="post-title-link" itemprop="url">STM32</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-11-07 15:45:53" itemprop="dateCreated datePublished" datetime="2024-11-07T15:45:53+08:00">2024-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-31 01:04:54" itemprop="dateModified" datetime="2024-12-31T01:04:54+08:00">2024-12-31</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="STM32简介"><a href="#STM32简介" class="headerlink" title="STM32简介"></a>STM32简介</h1><p>ST即“ST公司”，M即microcontroller（mcu，单片机）的首字母，32即32位</p>
+<h1 id="新建工程"><a href="#新建工程" class="headerlink" title="新建工程"></a>新建工程</h1><h2 id="开发方式"><a href="#开发方式" class="headerlink" title="开发方式"></a>开发方式</h2><ul>
+<li><p>基于寄存器</p>
+</li>
+<li><p>基于标准库</p>
+</li>
+<li><p>基于HAL库的方式</p>
+</li>
+</ul>
+<h1 id="GPIO-General-Purpose-Input-Output-通用输入输出口"><a href="#GPIO-General-Purpose-Input-Output-通用输入输出口" class="headerlink" title="GPIO(General Purpose Input Output)通用输入输出口"></a>GPIO(General Purpose Input Output)通用输入输出口</h1><ul>
+<li><p>可配置为8种输入输出模式</p>
+</li>
+<li><p>引脚电平：0V~3.3V，部分引脚可容忍5V（参考引脚定义，带ft是可以容忍5V的）</p>
+</li>
+<li><p>输出模式下可控制端口输出高低电平，用以驱动LED、控制蜂鸣器、模拟通信协议输出时序等</p>
+</li>
+<li><p>输入模式下可读取端口的高低电平或电压，用于读取按键输入、外接模块电平信号输入、ADC电压采集、模拟通信协议接收数据等</p>
+</li>
+</ul>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p><img src="/images/STM32/GPIO/%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84.png" alt="GPIO基本结构"></p>
+<p>内存可以通过APB2总线对寄存器进行读写，这样就可以完成对GPIO端口的读写，寄存器是32位，但是端口只有16个，对应低16位字段</p>
+<h2 id="GPIO位结构"><a href="#GPIO位结构" class="headerlink" title="GPIO位结构"></a>GPIO位结构</h2><p><img src="/images/STM32/GPIO/%E4%BD%8D%E7%BB%93%E6%9E%84.png" alt="GPIO位结构"></p>
+<h2 id="GPIO模式"><a href="#GPIO模式" class="headerlink" title="GPIO模式"></a>GPIO模式</h2><p><img src="/images/STM32/GPIO/%E6%A8%A1%E5%BC%8F.png" alt="GPIO模式"></p>
+<h2 id="LED闪烁"><a href="#LED闪烁" class="headerlink" title="LED闪烁"></a>LED闪烁</h2><p>1.使用RCC开启GPIO时钟</p>
+<p>2.使用GPIO_Init初始化GPIO</p>
+<p>3.使用输入输出函数控制I&#x2F;O</p>
+<p>涉及两个外设RCC和GPIO，可以在Library-rcc.h后面查看RCC库函数的定义，常用的有(右键跳转到定义可以查看函数说明和参数信息)</p>
+<p><code>void RCC_AHBPeriphClockCmd(uint32_t RCC_AHBPeriph, FunctionalState NewState);</code></p>
+<p><code>void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, FunctionalState NewState);</code></p>
+<p><img src="/images/STM32/GPIO/RCC_APB2%E8%AF%B4%E6%98%8E.png" alt="RCC_APB2说明"></p>
+<p><code>void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, FunctionalState NewState);</code></p>
+<p>gpio.h库函数常用的有：</p>
+<p><code>void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);</code>:将指定端口设置为高电平</p>
+<p><code>void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);</code>：将指定端口设置为低电平</p>
+<p><code>void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal);</code>：将指定端口设置为指定电平，即包含前两种函数功能</p>
+<p><code>void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal);</code>：直接把值写进对应端口的寄存器，下面流水灯程序会用到</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">	</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;<span class="comment">//推挽输出</span></span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	<span class="built_in">GPIO_Init</span>(GPIOA, &amp;GPIO_InitStructure);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">GPIO_SetBits</span>(GPIOA, GPIO_Pin_0);  </span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">1000</span>);</span><br><span class="line">		<span class="built_in">GPIO_ResetBits</span>(GPIOA, GPIO_Pin_0);</span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">1000</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在推挽模式下二极管怎么接都可闪烁，说明推挽模式高低电平都具有驱动能力。如果设置为开漏输出，则发现高电平点亮时LED不量说明开漏输出的高电平没有驱动能力。</p>
+<h2 id="LED流水灯"><a href="#LED流水灯" class="headerlink" title="LED流水灯"></a>LED流水灯</h2><p><img src="/images/STM32/GPIO/GPIO_PIN%E5%AE%9A%E4%B9%89.png" alt="GPIO_PIN定义"></p>
+<p>可以用或操作初始化多个端口，根据定义，换算成二进制每个端口对应一位，例如 PIN_0 | PIN_1 就是</p>
+<p>0000 0000 0000 0001 | 0000 0000 0000 0010 即 0000 0000 0000 0011</p>
+<p>对应位为1即可选中该端口，很多参数都可以这样操作</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">	</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_4 | GPIO_Pin_6 |GPIO_Pin_7;</span><br><span class="line"></span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	<span class="built_in">GPIO_Init</span>(GPIOA, &amp;GPIO_InitStructure);</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">GPIO_Write</span>(GPIOA, ~<span class="number">0x0001</span>); <span class="comment">// 0000 0000 0000 0001 低电平点亮，加上按位取反</span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">100</span>);</span><br><span class="line">		<span class="built_in">GPIO_Write</span>(GPIOA, ~<span class="number">0x0004</span>); <span class="comment">// 0000 0000 0000 0100</span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">100</span>);</span><br><span class="line">		<span class="built_in">GPIO_Write</span>(GPIOA, ~<span class="number">0x0010</span>); <span class="comment">// 0000 0000 0001 0000 </span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">100</span>);</span><br><span class="line">		<span class="built_in">GPIO_Write</span>(GPIOA, ~<span class="number">0x0040</span>); <span class="comment">// 0000 0000 0100 0000</span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">100</span>);</span><br><span class="line">		<span class="built_in">GPIO_Write</span>(GPIOA, ~<span class="number">0x0080</span>); <span class="comment">// 0000 0000 1000 0000 </span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPIO输入-按键控制"><a href="#GPIO输入-按键控制" class="headerlink" title="GPIO输入-按键控制"></a>GPIO输入-按键控制</h2><p><img src="/images/STM32/GPIO/%E6%8C%89%E9%94%AE%E6%8A%96%E5%8A%A8.png" alt="按键抖动"></p>
+<p>按键在按下时会有一段抖动，需要进行过滤，不然LED会在短时间连续闪烁几次，最简单的方法是加个延时</p>
+<h3 id="传感器模块介绍"><a href="#传感器模块介绍" class="headerlink" title="传感器模块介绍"></a>传感器模块介绍</h3><p><img src="/images/STM32/GPIO/%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BB%8B%E7%BB%8D.png" alt="传感器介绍"></p>
+<p><img src="/images/STM32/GPIO/%E7%A1%AC%E4%BB%B6%E7%94%B5%E8%B7%AF.png" alt="硬件电路"></p>
+<p>左上图1(常用)：当按键按下时，PA0被直接下拉到GND，此时读取PA0口的电压就是低电平，按键松手时，PA0会悬空，此时引脚电压不确定，所以在这种接法必须要求PA0是上拉输入的模式，否则就会出现电压不确定的错误；在上拉输入模式中，引脚悬空，PA0是高电平，所以在这种模式中，按下按键引脚是低电平，松手引脚是高电平；</p>
+<p>右上图2(常用)：按键松手时，引脚由于上拉作用，保持高电平，按下时接到GND，为低电平；</p>
+<p>左下图3：与图1类似，要求端口必须是下拉输入模式(一般单片机不一定有)</p>
+<p><img src="/images/STM32/GPIO/c%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png" alt="c数据类型"></p>
+<p>因为一些原因，c语言中的数据类型被重新命名，使用了typedef</p>
+<p><img src="/images/STM32/GPIO/c%E5%AE%8F%E5%AE%9A%E4%B9%89.png" alt="c宏定义"></p>
+<p>例如前面使用的GPIO_PIN_0 就是宏定义</p>
+<p><code>#define GPIO_Pin_0 ((uint16_t)0x0001)</code></p>
+<p>0x0001 我们不好理解，GPIO_PIN_O方便我们理解</p>
+<h3 id="按键控制LED"><a href="#按键控制LED" class="headerlink" title="按键控制LED"></a>按键控制LED</h3><p>需要完成按键和LED的驱动代码，为了可读性和易移植性，我们把驱动代码封装起来。</p>
+<p>在工程文件和keil项目中都添加Hardware文件，用来存放驱动程序的.c、.h文件，在Hardware下分别添加LED.c（存放主体代码）和LED.h（存放此驱动程序可以对外提供的函数和变量声明），注意文件路径选择Hardware，默认是在文件外 </p>
+<h4 id="封装的过程"><a href="#封装的过程" class="headerlink" title="封装的过程"></a>封装的过程</h4><ul>
+<li>在LED.c中添加函数</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LED_Init</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">RCC_APB2PeriphClockCmd</span>(RCC_APB2Periph_GPIOA, ENABLE);</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_3;</span><br><span class="line">	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">	<span class="built_in">GPIO_Init</span>(GPIOA, &amp;GPIO_InitStructure);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在LED.h中添加对模块的外部声明，说明这个函数可以被外部调用</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __LED_H<span class="comment">//防止头文件重复包含</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __LED_H</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LED_Init</span><span class="params">(<span class="type">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>最后在主函数中添加<code>include &quot;LED.H&quot;</code>即可在主函数中直接调用LED_Init函数</li>
+</ul>
+<h4 id="需要使用的GPIO读取输入函数"><a href="#需要使用的GPIO读取输入函数" class="headerlink" title="需要使用的GPIO读取输入函数"></a>需要使用的GPIO读取输入函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">uint8_t</span> <span class="title">GPIO_ReadInputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span></span>;<span class="comment">//读取输入寄存器某一个端口的值，输入值GPIOx，GPIO_Pin用来指定端口，返回值是uint8_t，代表这个端口的高低点评</span></span><br><span class="line"><span class="function"><span class="type">uint16_t</span> <span class="title">GPIO_ReadInputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span></span>;<span class="comment">//读取输入寄存器的所有值，只有一个输入用来指定输入寄存器，返回值是16位无符号数，每一位代表一个端口值</span></span><br><span class="line"><span class="function"><span class="type">uint8_t</span> <span class="title">GPIO_ReadOutputDataBit</span><span class="params">(GPIO_TypeDef* GPIOx, <span class="type">uint16_t</span> GPIO_Pin)</span></span>;<span class="comment">//读取输出寄存器的某一位，一般用来输出的时候来查看我们输出的是什么</span></span><br><span class="line"><span class="function"><span class="type">uint16_t</span> <span class="title">GPIO_ReadOutputData</span><span class="params">(GPIO_TypeDef* GPIOx)</span></span>;<span class="comment">//读取输出寄存器的值</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LED.c的功能函数，读取LED当前的输出状态，输出为0则置1，输出为1则置0，以实现按键按下LED亮/熄灭</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">LED2_Turn</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">GPIO_ReadOutputDataBit</span>(GPIOA, GPIO_Pin_3) == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">GPIO_SetBits</span>(GPIOA, GPIO_Pin_3);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">GPIO_ResetBits</span>(GPIOA, GPIO_Pin_3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Key.c的功能函数，捕获按键按下的动作，并以值的形式返回</span></span><br><span class="line"><span class="function"><span class="type">uint8_t</span> <span class="title">Key_GetNum</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">uint8_t</span> KeyNum = <span class="number">0</span>; <span class="comment">//如果按键没有按下，默认值为0</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">GPIO_ReadInputDataBit</span>(GPIOB, GPIO_Pin_1) == <span class="number">0</span>)<span class="comment">//端口值为0时代表按键按下，原因参考硬件电路图1</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">20</span>);<span class="comment">//按下消抖</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="built_in">GPIO_ReadInputDataBit</span>(GPIOB, GPIO_Pin_1) == <span class="number">0</span>);<span class="comment">//检测按键按下松手，如果一直不松手则卡在这个循环</span></span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">20</span>);<span class="comment">//松手消抖</span></span><br><span class="line">		KeyNum = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">GPIO_ReadInputDataBit</span>(GPIOB, GPIO_Pin_11) == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">20</span>);<span class="comment">//按下消抖</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="built_in">GPIO_ReadInputDataBit</span>(GPIOB, GPIO_Pin_11) == <span class="number">0</span>);</span><br><span class="line">		<span class="built_in">Delay_ms</span>(<span class="number">20</span>);<span class="comment">//松手消抖</span></span><br><span class="line">		KeyNum = <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> KeyNum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//主函数</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f10x.h&quot;</span>                  <span class="comment">// Device header</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Delay.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;LED.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Key.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">uint8_t</span> KeyNum; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">LED_Init</span>();</span><br><span class="line">	<span class="built_in">Key_Init</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		KeyNum = <span class="built_in">Key_GetNum</span>();</span><br><span class="line">		<span class="keyword">if</span>(KeyNum == <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">LED1_Turn</span>();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(KeyNum == <span class="number">2</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">LED2_Turn</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="OLED调试方法"><a href="#OLED调试方法" class="headerlink" title="OLED调试方法"></a>OLED调试方法</h1><p>硬件电路：<br><img src="/images/STM32/OLED/%E7%A1%AC%E4%BB%B6%E7%94%B5%E8%B7%AF.png" alt="硬件电路"></p>
+<p>驱动函数：<br><img src="/images/STM32/OLED/%E9%A9%B1%E5%8A%A8%E5%87%BD%E6%95%B0.png" alt="驱动函数"></p>
+<h1 id="中断系统"><a href="#中断系统" class="headerlink" title="中断系统"></a>中断系统</h1><ul>
+<li>中断系统</li>
+</ul>
+<p>主程序运行过程中，出现了特定的中断触发条件（中断源），使得CPU暂停转而去处理中断（运行一个中断处理程序），中断处理完成后回到原程序暂停的位置继续执行</p>
+<ul>
+<li>中断优先级</li>
+</ul>
+<p>多个中断源同时发出中断请求后，CPU会根据中断源的轻重缓急进行裁决，优先响应更加紧急的中断源</p>
+<ul>
+<li>中断嵌套</li>
+</ul>
+<p>当一个中断程序正在运行时，又有新的更高优先级的中断源申请中断，CPU再次暂停当前中断程序，转而去处理新的中断程序，处理完成后依次进行返回</p>
+<ul>
+<li>中断执行流程</li>
+</ul>
+<p><img src="/images/STM32/OLED/%E4%B8%AD%E6%96%AD%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" alt="中断执行流程"></p>
+<p>在发生中断时需要保存当前程序上下文，以便之后回来接着执行</p>
+<h2 id="STM32中断"><a href="#STM32中断" class="headerlink" title="STM32中断"></a>STM32中断</h2><ul>
+<li><p>68个可屏蔽中断通道，包含EXTI、TIM、ADC、USART、SPI、I2C、RTC等多个外设</p>
+</li>
+<li><p>使用NVIC统一管理中断（帮助CPU判断该处理哪个中断），每个中断通道都拥有16个可编程的优先等级，可对优先级进行分组，进一步设置抢占优先级和响应优先级</p>
+</li>
+</ul>
+<p><img src="/images/STM32/OLED/NVIC%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84.png" alt="NVIC基本结构"></p>
+<h3 id="优先级分组"><a href="#优先级分组" class="headerlink" title="优先级分组"></a>优先级分组</h3><ul>
+<li><p>NVIC的中断优先级由优先级寄存器的4位（0~15）决定，这4位可以进行切分，分为高n位的抢占优先级和低4-n位的响应优先级</p>
+</li>
+<li><p>抢占优先级高的可以中断嵌套，响应优先级高的可以优先排队，抢占优先级和响应优先级均相同的按中断号排队</p>
+</li>
+</ul>
+<p><img src="/images/STM32/OLED/%E4%BC%98%E5%85%88%E7%BA%A7%E5%88%86%E7%BB%84.png" alt="优先级分组"></p>
+<h2 id="EXTI（Extern-Interrupt）外部中断"><a href="#EXTI（Extern-Interrupt）外部中断" class="headerlink" title="EXTI（Extern Interrupt）外部中断"></a>EXTI（Extern Interrupt）外部中断</h2><ul>
+<li><p>EXTI可以监测指定GPIO口的电平信号，当其指定的GPIO口产生电平变化时，EXTI将立即向NVIC发出中断申请，经过NVIC裁决后即可中断CPU主程序，使CPU执行EXTI对应的中断程序</p>
+</li>
+<li><p>支持的触发方式：上升沿&#x2F;下降沿&#x2F;双边沿&#x2F;软件触发</p>
+</li>
+<li><p>支持的GPIO口：所有GPIO口，但相同的Pin（例如PA0和PB0,PA1和PB1等等）不能同时触发中断</p>
+</li>
+<li><p>通道数：16个GPIO_Pin，外加PVD输出、RTC闹钟、USB唤醒、以太网唤醒</p>
+</li>
+<li><p>触发响应方式：中断响应&#x2F;事件响应</p>
+</li>
+</ul>
+<h3 id="EXTI基本结构"><a href="#EXTI基本结构" class="headerlink" title="EXTI基本结构"></a>EXTI基本结构</h3><p><img src="/images/STM32/OLED/EXTI%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84.png" alt="EXTI基本结构"></p>
+<h4 id="AFIO复用IO口"><a href="#AFIO复用IO口" class="headerlink" title="AFIO复用IO口"></a>AFIO复用IO口</h4><ul>
+<li><p>AFIO主要用于引脚复用功能的选择和重定义（在开始引脚定义表，如果把默认复用功能换成重定义栏的功能，就是用AFIO来完成）</p>
+</li>
+<li><p>在STM32中，AFIO主要完成两个任务：复用功能引脚重映射、中断引脚选择</p>
+</li>
+</ul>
+<p><img src="/images/STM32/OLED/AFIO.png" alt="AFIO"></p>
+<h2 id="对射式红外传感器计数"><a href="#对射式红外传感器计数" class="headerlink" title="对射式红外传感器计数"></a>对射式红外传感器计数</h2><ul>
+<li>在Hardware里添加CountSensor.c和.h文件</li>
+</ul>
+<p>初始化函数参考EXTI基本结构图，需要将所有参与的外设都配置，依次有GPIO、AFIO、EXTI、NVIC（EXIT和NVIC时钟一直开启，不需要手动打开，NVIC是内核外设）</p>
+<p>AFIO相关库函数也在GPIO.c、.h中，在GPIO.h中下拉可以找到</p>
+<p><code>void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState); void GPIO_EXTILineConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource);</code></p>
+<p>GPIO_PinRemapConfig用于引脚重映射，GPIO_EXTILineConfig就是中断函数，可以配置AFIO的数据选择器从而选择我们的中断引脚</p>
+<h1 id="TIM输出比较OC（Output-Compare）"><a href="#TIM输出比较OC（Output-Compare）" class="headerlink" title="TIM输出比较OC（Output Compare）"></a>TIM输出比较OC（Output Compare）</h1><ul>
+<li><p>输出比较可以通过比较CNT与CCR寄存器值的关系，来对输出电平进行置1、置0或翻转的操作，用于输出一定频率和占空比的PWM波形</p>
+</li>
+<li><p>每个高级定时器和通用定时器都拥有4个输出比较通道</p>
+</li>
+<li><p>高级定时器的前3个通道额外拥有死区生成和互补输出的功能</p>
+</li>
+</ul>
+<h2 id="PWM简介"><a href="#PWM简介" class="headerlink" title="PWM简介"></a>PWM简介</h2><ul>
+<li><p>PWM（Pulse Width Modulation）脉冲宽度调制</p>
+</li>
+<li><p>在具有惯性的系统中，可以通过对一系列脉冲的宽度进行调制，来等效地获得所需要的模拟参量，常应用于电机控速等领域</p>
+</li>
+<li><p>PWM参数：</p>
+</li>
+</ul>
+<p>频率 &#x3D; 1 &#x2F; Ts 越高越稳定，但是性能开销越大<br>占空比 &#x3D; TON &#x2F; Ts<br>分辨率 &#x3D; 占空比变化步距</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/05/hexo%E8%BF%81%E7%A7%BB%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/11/05/hexo%E8%BF%81%E7%A7%BB%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">hexo迁移流程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-05 19:01:07 / 修改时间：19:23:16" itemprop="dateCreated datePublished" datetime="2024-11-05T19:01:07+08:00">2024-11-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="记录在更换电脑后重新迁移个人博客的一些流程"><a href="#记录在更换电脑后重新迁移个人博客的一些流程" class="headerlink" title="记录在更换电脑后重新迁移个人博客的一些流程"></a>记录在更换电脑后重新迁移个人博客的一些流程</h1><ul>
+<li><p>首先是整个Blog文件夹的复制</p>
+</li>
+<li><p>git安装，这里重新连接了一下hithub仓库，参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103391101%E5%89%8D%E5%8D%8A%E9%83%A8%E5%88%86%EF%BC%8C%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9B%AE%E5%89%8D%E6%84%9F%E8%A7%89%E6%B2%A1%E7%94%A8%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%8D%E8%A1%8C%E5%8F%AF%E4%BB%A5%E5%86%8D%E7%9C%8B%E7%9C%8B">https://zhuanlan.zhihu.com/p/103391101前半部分，后半部分目前感觉没用，如果不行可以再看看</a></p>
+</li>
+<li><p>nodejs安装（这里需要配置一些系统路径）</p>
+</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/105715224">https://zhuanlan.zhihu.com/p/105715224</a></p>
+<ul>
+<li>安装hexo</li>
+</ul>
+<p>这里用git遇到一些权限报错，更改nodejs文件权限仍未解决，最后用管理员身份运行powershell，进入blog文件夹安装hexo</p>
+<p>虽然折腾了半天，但是能写的好像就这么多，，，。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/18/%E5%93%88%E5%B8%8C%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/18/%E5%93%88%E5%B8%8C%E8%A1%A8/" class="post-title-link" itemprop="url">哈希表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-18 15:04:18" itemprop="dateCreated datePublished" datetime="2024-07-18T15:04:18+08:00">2024-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-12 22:27:55" itemprop="dateModified" datetime="2025-03-12T22:27:55+08:00">2025-03-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">数据结构&算法基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="哈希表理论基础"><a href="#哈希表理论基础" class="headerlink" title="哈希表理论基础"></a>哈希表理论基础</h1><h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><p>哈希表（Hash table，国内也有一些算法书籍翻译为散列表，看到这两个名称知道都是指hash table就可以了）。<br><strong>哈希表是根据关键码的值而直接进行访问的数据结构</strong>。<br>数组就是一张哈希表。哈希表中关键码就是数组的索引下标，然后通过下标直接访问数组中的元素。<br>哈希表解决的问题：<strong>一般哈希表都是用来快速判断一个元素是否出现集合里</strong>。<br>例如要查询一个名字是否在这所学校里。要枚举的话时间复杂度是O(n)，但如果使用哈希表的话， 只需要O(1)就可以做到。<br>只需要初始化把这所学校里学生的名字都存在哈希表里，在查询的时候通过索引直接就可以知道这位同学在不在这所学校里了。<br>将学生姓名映射到哈希表上就涉及到了hash function ，也就是哈希函数。</p>
+<h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>哈希函数，把学生的姓名直接映射为哈希表上的索引，然后就可以通过查询索引下标快速知道这位同学是否在这所学校里了。</p>
+<p>哈希函数如下图所示，通过hashCode把名字转化为数值，一般hashcode是通过特定编码方式，可以将其他数据格式转化为不同的数值，这样就把学生名字映射为哈希表上的索引数字了。</p>
+<p><img src="/images/hash/2021010423484818.png" alt="映射"></p>
+<p>如果hashCode得到的数值大于 哈希表的大小了，也就是大于tableSize了，此时为了保证映射出来的索引数值都落在哈希表上，我们会在再次对数值做一个取模的操作，这样我们就保证了学生姓名一定可以映射到哈希表上了。</p>
+<p>如果学生的数量大于哈希表的大小怎么办，此时就算哈希函数计算的再均匀，也避免不了会有几位学生的名字同时映射到哈希表同一个索引下标的位置。</p>
+<h3 id="哈希碰撞"><a href="#哈希碰撞" class="headerlink" title="哈希碰撞"></a>哈希碰撞</h3><p>如图所示，小李和小王都映射到了索引下标 1 的位置，这一现象叫做哈希碰撞。</p>
+<p><img src="/images/hash/2021010423494884.png" alt="示例"></p>
+<p>一般哈希碰撞有两种解决方法， 拉链法和线性探测法。</p>
+<h4 id="拉链法"><a href="#拉链法" class="headerlink" title="拉链法"></a>拉链法</h4><p>刚刚小李和小王在索引1的位置发生了冲突，发生冲突的元素都被存储在链表中。</p>
+<p><img src="/images/hash/%E6%8B%89%E9%93%BE%E6%B3%95.png" alt="拉链法"></p>
+<p>（数据规模是dataSize， 哈希表的大小为tableSize）</p>
+<p>其实拉链法就是要选择适当的哈希表的大小，这样既不会因为数组空值而浪费大量内存，也不会因为链表太长而在查找上浪费太多时间。</p>
+<h4 id="线性探测法"><a href="#线性探测法" class="headerlink" title="线性探测法"></a>线性探测法</h4><p>计算哈希值：使用哈希函数计算键的哈希值，确定初始的插入位置<br>检查冲突：如果该位置已经被占用，则顺序检查下一个位置（通常是当前位置加1）。<br>插入或查找：<br>如果是插入操作，找到第一个空槽并插入键值对。<br>如果是查找操作，顺序检查直到找到目标键或遇到空槽（表示键不存在）。<br>处理表满：如果哈希表已满，需要进行扩容操作。要求tableSize一定要大于dataSize </p>
+<h2 id="常见的三种哈希结构"><a href="#常见的三种哈希结构" class="headerlink" title="常见的三种哈希结构"></a>常见的三种哈希结构</h2><p>当我们想使用哈希法来解决问题的时候，我们一般会选择如下三种数据结构。</p>
+<ul>
+<li>数组</li>
+<li>set（集合）</li>
+<li>map(映射)<br>数组就没啥可说的了，来看set</li>
+</ul>
+<p>在C++中，set 和 map 分别提供以下三种数据结构，其底层实现以及优劣如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>集合</th>
+<th>底层实现</th>
+<th>是否有序</th>
+<th>数值是否可以重复</th>
+<th>能否更改数值</th>
+<th>查询效率</th>
+<th>增删效率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>std::set</td>
+<td>红黑树</td>
+<td>有序</td>
+<td>否</td>
+<td>否</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>std::multiset</td>
+<td>红黑树</td>
+<td>有序</td>
+<td>是</td>
+<td>否</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>std::unordered_set</td>
+<td>哈希表</td>
+<td>无序</td>
+<td>否</td>
+<td>否</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<p>std::unordered_set底层实现为哈希表，std::set 和std::multiset 的底层实现是红黑树，红黑树是一种平衡二叉搜索树，所以key值是有序的，但key不可以修改，改动key值会导致整棵树的错乱，所以只能删除和增加。</p>
+<table>
+<thead>
+<tr>
+<th>映射</th>
+<th>底层实现</th>
+<th>是否有序</th>
+<th>数值是否可以重复</th>
+<th>能否更改数值</th>
+<th>查询效率</th>
+<th>增删效率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>std::map</td>
+<td>红黑树</td>
+<td>key有序</td>
+<td>key不可重复</td>
+<td>key不可修改</td>
+<td>O(logn)</td>
+<td>O(logn)</td>
+</tr>
+<tr>
+<td>std::multimap</td>
+<td>红黑树</td>
+<td>key有序</td>
+<td>key可重复</td>
+<td>key不可修改</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td>std::unordered_map</td>
+<td>哈希表</td>
+<td>key无序</td>
+<td>key不可重复</td>
+<td>key不可修改</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<p>std::unordered_map 底层实现为哈希表，std::map 和std::multimap 的底层实现是红黑树。同理，std::map 和std::multimap 的key也是有序的（这个问题也经常作为面试题，考察对语言容器底层的理解）。</p>
+<p><strong>当我们要使用集合来解决哈希问题的时候，优先使用unordered_set，因为它的查询和增删效率是最优的，如果需要集合是有序的，那么就用set，如果要求不仅有序还要有重复数据的话，那么就用multiset</strong>。</p>
+<p>map 是一个key value 的数据结构，map中，对key是有限制，对value没有限制的，因为key的存储方式使用红黑树实现的。</p>
+<p>其他语言例如：java里的HashMap ，TreeMap 都是一样的原理。可以灵活贯通。</p>
+<p>虽然std::set和std::multiset 的底层实现基于红黑树而非哈希表，它们通过红黑树来索引和存储数据。不过给我们的使用方式，还是哈希法的使用方式，即依靠键（key）来访问值（value）。所以使用这些数据结构来解决映射问题的方法，我们依然称之为哈希法。std::map也是一样的道理。</p>
+<p>这里在说一下，一些C++的经典书籍上 例如STL源码剖析，说到了hash_set hash_map，这个与unordered_set，unordered_map又有什么关系呢？</p>
+<p>实际上功能都是一样一样的， 但是unordered_set在C++11的时候被引入标准库了，而hash_set并没有，所以建议还是使用unordered_set比较好，这就好比一个是官方认证的，hash_set，hash_map 是C++11标准之前民间高手自发造的轮子。</p>
+<p><img src="/images/hash/20210104235134572.png" alt="示例"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下，当我们<strong>遇到了要快速判断一个元素是否出现集合里的时候，就要考虑哈希法</strong>。</p>
+<p>但是哈希法也是牺牲了<strong>空间换取了时间</strong>，因为我们要使用额外的数组，set或者是map来存放数据，才能实现快速的查找。</p>
+<p>如果在做面试题目的时候遇到需要判断一个元素是否出现过的场景也应该第一时间想到哈希法！</p>
+<h1 id="有效的字母异位词"><a href="#有效的字母异位词" class="headerlink" title="有效的字母异位词"></a>有效的字母异位词</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-anagram/">力扣题目链接</a></p>
+<p>给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。</p>
+<p>示例 1: 输入: s &#x3D; “anagram”, t &#x3D; “nagaram” 输出: true</p>
+<p>示例 2: 输入: s &#x3D; “rat”, t &#x3D; “car” 输出: false</p>
+<p>说明: 你可以假设字符串只包含小写字母。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>先看暴力的解法，两层for循环，同时还要记录字符是否重复出现，很明显时间复杂度是 O(n^2)。</p>
+<p>暴力的方法这里就不做介绍了，直接看一下有没有更优的方式。</p>
+<p><strong>数组其实就是一个简单哈希表</strong>，而且这道题目中字符串只有小写字符，那么就可以定义一个数组，来记录字符串s里字符出现的次数。</p>
+<p>如果对哈希表的理论基础关于数组，set，map不了解的话可以看这篇：关于哈希表，你该了解这些！(opens new window)</p>
+<p>需要定义一个多大的数组呢，定一个数组叫做record，大小为26 就可以了，初始化为0，因为字符a到字符z的ASCII也是26个连续的数值。</p>
+<p>为了方便举例，判断一下字符串s&#x3D; “aee”, t &#x3D; “eae”。</p>
+<p>操作动画如下：</p>
+<p><img src="/images/hash/242.%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D.gif" alt="字母异位词"></p>
+<p>定义一个数组叫做record用来上记录字符串s里字符出现的次数。</p>
+<p>需要把字符映射到数组也就是哈希表的索引下标上，<strong>因为字符a到字符z的ASCII是26个连续的数值，所以字符a映射为下标0，相应的字符z映射为下标25</strong>。</p>
+<p>再遍历字符串s的时候，<strong>只需要将 s[i] - ‘a’ 所在的元素做+1 操作即可，并不需要记住字符a的ASCII，只要求出一个相对数值就可以了</strong>。 这样就将字符串s中字符出现的次数，统计出来了。</p>
+<p>那看一下如何检查字符串t中是否出现了这些字符，同样在遍历字符串t的时候，对t中出现的字符映射哈希表索引上的数值再做-1的操作。</p>
+<p>那么最后检查一下，**record数组如果有的元素不为零0，说明字符串s和t一定是谁多了字符或者谁少了字符，<code>return false</code>**。</p>
+<p>最后如果record数组所有元素都为零0，说明字符串s和t是字母异位词，return true。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">isAnagram</span><span class="params">(<span class="type">char</span>* s, <span class="type">char</span>* t)</span> &#123;</span><br><span class="line">    <span class="type">int</span> record1[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">int</span> record2[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">int</span> len1 = <span class="built_in">strlen</span>(s);</span><br><span class="line">    <span class="type">int</span> len2 = <span class="built_in">strlen</span>(t);</span><br><span class="line">    <span class="keyword">if</span>(len1 != len2)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len1; i++)&#123;</span><br><span class="line">        record1[s[i] - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">        record2[t[i] - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(record1[i] != record2[i])&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度: O(n)</li>
+<li>空间复杂度: O(1)</li>
+</ul>
+<h1 id="两个数组的交集"><a href="#两个数组的交集" class="headerlink" title="两个数组的交集"></a>两个数组的交集</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/intersection-of-two-arrays/">力扣题目链接</a></p>
+<p>给定两个数组，编写一个函数来计算它们的交集。</p>
+<p>说明： 输出结果中的每个元素一定是唯一的。 我们可以不考虑输出结果的顺序。</p>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>这道题目，主要要学会使用一种哈希数据结构：unordered_set，这个数据结构可以解决很多类似的问题。</p>
+<p>注意题目特意说明：<strong>输出结果中的每个元素一定是唯一的，也就是说输出的结果的去重的， 同时可以不考虑输出结果的顺序</strong></p>
+<p>这道题用暴力的解法时间复杂度是O(n^2)，那来看看使用哈希法进一步优化。</p>
+<p>那么用数组来做哈希表也是不错的选择。</p>
+<p>但是要注意，**使用数组来做哈希的题目，是因为题目都限制了数值的大小(此题为1000)**。</p>
+<p><strong>而且如果哈希值比较少、特别分散、跨度非常大，使用数组就造成空间的极大浪费。</strong></p>
+<p>此时就要使用另一种结构体了，set ，关于set，C++ 给提供了如下三种可用的数据结构：</p>
+<ul>
+<li>std::set</li>
+<li>std::multiset</li>
+<li>std::unordered_set</li>
+</ul>
+<p>std::set和std::multiset底层实现都是红黑树，std::unordered_set的底层实现是哈希表， 使用unordered_set 读写效率是最高的，并不需要对数据进行排序，而且还不要让数据重复，所以选择unordered_set。</p>
+<p>思路如图所示：</p>
+<p><img src="/images/hash/20220707173513.png" alt="setunordered_set"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//暂时没学c++这题就先当c++科普了</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Note: The returned array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span>* <span class="title function_">intersection</span><span class="params">(<span class="type">int</span>* nums1, <span class="type">int</span> nums1Size, <span class="type">int</span>* nums2, <span class="type">int</span> nums2Size, <span class="type">int</span>* returnSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> record[<span class="number">1001</span>] = &#123;<span class="number">0</span>&#125;;<span class="comment">//哈希表</span></span><br><span class="line">    <span class="type">int</span> lessSize = nums1Size &lt; nums2Size ? nums1Size : nums2Size;</span><br><span class="line">    <span class="type">int</span>* result = (<span class="type">int</span> *)<span class="built_in">calloc</span>(lessSize, <span class="keyword">sizeof</span>(<span class="type">int</span>));<span class="comment">//使用calloc申请结果数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums1Size; i++)&#123;<span class="comment">//为了避免重复值，若存在该元素，将哈希表对应索引位置的值设为1</span></span><br><span class="line">        <span class="keyword">if</span>(record[nums1[i]] == <span class="number">0</span>)&#123;</span><br><span class="line">            record[nums1[i]]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums2Size; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(record[nums2[i]] == <span class="number">1</span>)&#123;<span class="comment">//如果索引处的值是1，则nums1中也存在该值</span></span><br><span class="line">            result[j++] = nums2[i];</span><br><span class="line">            record[nums2[i]] = <span class="number">0</span>;<span class="comment">//避免重复值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    *returnSize = j;<span class="comment">//!!!设置返回值大小</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度: O(m + n)</li>
+<li>空间复杂度: O(n)</li>
+</ul>
+<h1 id="快乐数"><a href="#快乐数" class="headerlink" title="快乐数"></a>快乐数</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/happy-number/">力扣题目链接</a></p>
+<p>编写一个算法来判断一个数 n 是不是快乐数。</p>
+<p>「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。</p>
+<p>如果 n 是快乐数就返回 True ；不是，则返回 False 。</p>
+<p><strong>示例：</strong></p>
+<p>输入：19</p>
+<p>输出：true</p>
+<p>解释：</p>
+<p>1^2 + 9^2 &#x3D; 82</p>
+<p>8^2 + 2^2 &#x3D; 68</p>
+<p>6^2 + 8^2 &#x3D; 100</p>
+<p>1^2 + 0^2 + 0^2 &#x3D; 1</p>
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><p>道题目看上去貌似一道数学问题，其实并不是！</p>
+<p>题目中说了会<strong>无限循环，那么也就是说求和的过程中，sum会重复出现，这对解题很重要</strong>！</p>
+<p><strong>当我们遇到了要快速判断一个元素是否出现集合里的时候，就要考虑哈希法了</strong>。</p>
+<p>所以这道题目使用哈希法，来判断这个sum是否重复出现，如果重复了就是return false， 否则一直找到sum为1为止。</p>
+<p>判断sum是否重复出现就可以使用unordered_set。</p>
+<p>还有一个难点就是<strong>求和的过程，如果对取数值各个位上的单数操作不熟悉的话，做这道题也会比较艰难</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">get_sum</span><span class="params">(<span class="type">int</span> n)</span>&#123;<span class="comment">//求每一位的平方和</span></span><br><span class="line">    <span class="type">div_t</span> n_div = &#123; .quot = n&#125;;</span><br><span class="line">    <span class="comment">//n_div.quot是商,n_div.rem是余数</span></span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(n_div.quot != <span class="number">0</span>)&#123;</span><br><span class="line">        n_div = div(n_div.quot, <span class="number">10</span>);</span><br><span class="line">        sum = sum + n_div.rem *n_div.rem;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> <span class="title function_">isHappy</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="comment">//数学分析过程</span></span><br><span class="line">    <span class="comment">// sum = a1^2 + a2^2 + ... ak^2</span></span><br><span class="line">    <span class="comment">// first round:</span></span><br><span class="line">    <span class="comment">// 1 &lt;= k &lt;= 10</span></span><br><span class="line">    <span class="comment">// 1 &lt;= sum &lt;= 1 + 81 * 9 = 730</span></span><br><span class="line">    <span class="comment">// second round:</span></span><br><span class="line">    <span class="comment">// 1 &lt;= k &lt;= 3</span></span><br><span class="line">    <span class="comment">// 1 &lt;= sum &lt;= 36 + 81 * 2 = 198</span></span><br><span class="line">    <span class="comment">// third round:</span></span><br><span class="line">    <span class="comment">// 1 &lt;= sum &lt;= 81 * 2 = 162</span></span><br><span class="line">    <span class="comment">// fourth round:</span></span><br><span class="line">    <span class="comment">// 1 &lt;= sum &lt;= 81 * 2 = 162</span></span><br><span class="line">    <span class="type">uint8_t</span> visited[<span class="number">163</span>] = &#123;<span class="number">0</span>&#125;;<span class="comment">//可以存储8位无符号数，0-255</span></span><br><span class="line">    <span class="type">int</span> sum = get_sum(get_sum(n));<span class="comment">//此时sum一定小于255</span></span><br><span class="line">    <span class="type">int</span> m = sum;<span class="comment">//没有这个变量也行</span></span><br><span class="line">    <span class="keyword">while</span>(sum != <span class="number">1</span>)&#123;</span><br><span class="line">        sum = get_sum(m);<span class="comment">//sum = m也行</span></span><br><span class="line">        <span class="keyword">if</span>(visited[sum] == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//出现重复，不是快乐数</span></span><br><span class="line">        &#125;</span><br><span class="line">        visited[sum] = <span class="number">1</span>;</span><br><span class="line">        m = get_sum(m);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// (版本2)使用快慢指针</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">isHappy</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> slow = n;</span><br><span class="line">    <span class="type">int</span> fast = n;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        slow = get_sum(slow);</span><br><span class="line">        fast = get_sum(get_sum(fast));</span><br><span class="line">    &#125; <span class="keyword">while</span> (slow != fast);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (fast == <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="两数之和"><a href="#两数之和" class="headerlink" title="两数之和"></a>两数之和</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">力扣题目链接</a></p>
+<p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。</p>
+<p>示例:</p>
+<p>给定 nums &#x3D; [2, 7, 11, 15], target &#x3D; 9</p>
+<p>因为 nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9</p>
+<p>所以返回 [0, 1]</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/12/%E9%93%BE%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -689,14 +1242,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
