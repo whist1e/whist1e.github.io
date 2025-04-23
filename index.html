@@ -383,6 +383,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E5%A4%9A%E6%80%81%E8%81%8C%E5%B7%A5%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/03/13/%E5%A4%9A%E6%80%81%E8%81%8C%E5%B7%A5%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">多态职工管理系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-03-13 22:08:57" itemprop="dateCreated datePublished" datetime="2025-03-13T22:08:57+08:00">2025-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 19:46:39" itemprop="dateModified" datetime="2025-03-27T19:46:39+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>首先创建文件</p>
+<p>创建主程序和要实现的类<code>WorkManager</code>，在头文件中声明要包含的文件，防止重复包含<code>的#pragma once</code>等等，然后创建构造和析构函数，再写出对外提供的接口<code>Show_Menu</code>，并在cpp中写出相应的空实现。</p>
+<p><strong>遇到问题1：</strong>代码无错误，但是调试时报错，通过清理解决方案解决。<br>生成开始于 20:52…<br>1&gt;—— 已启动生成: 项目: 多态职工管理系统, 配置: Debug x64 ——<br>1&gt;LINK : fatal error LNK1168: 无法打开 C:\Users\12780\Desktop\c++基础小玩意\多态职工管理系统\x64\Debug\多态职工管理系统.exe 进行写入<br>1&gt;已完成生成项目“多态职工管理系统.vcxproj”的操作 - 失败。</p>
+<p>6.1 创建职工抽象类<br>职工的分类为:普通员工、经理、老板将三种职工抽象到一个类(worker)中,利用多态管理不同职工种类职工的属性为:职工编号、职工姓名、职工所在部门编号职工的行为为:岗位职责信息描述，获取岗位名称</p>
+<p><strong>遇到问题2</strong>：“worker”: 重定义；多次初始化</p>
+<pre><code>void test()
+&#123;
+    Worker* worker = NULL;
+    worker = new Employee(1, &quot;张三&quot;, 1);
+    worker-&gt;ShowInfo();
+    delete worker;
+
+
+    worker = new Manager(1, &quot;张三&quot;, 1);
+    worker-&gt;ShowInfo();
+    delete worker;
+
+
+    worker = new Boss(1, &quot;张三&quot;, 1);
+    worker-&gt;ShowInfo();
+    delete worker;
+    work = NULL;
+&#125;
+</code></pre>
+<p>使用 delete 操作符后，worker 指针所指向的动态分配的内存被释放了。这意味着 worker 成为了一个“悬垂指针”（dangling pointer），它指向的内存现在可能包含垃圾数据或者已经被操作系统重新分配给了其他用途。</p>
+<p>在代码中，尽管 delete 被调用了，<strong>但 worker 指针本身并没有被改变，它仍然存储着之前分配内存的地址</strong>。这就是为什么你可以在 delete 之后继续给 worker 赋予新的值，并且它似乎仍然可以“工作”。实际上，每次 delete 之后，你应该立即将 worker 设置为 NULL，这样可以避免悬垂指针的问题。</p>
+<p>上述代码也是多态的作用</p>
+<h2 id="添加职工"><a href="#添加职工" class="headerlink" title="添加职工"></a>添加职工</h2><p>每个职工的身份不同，如何使用一个数组存储所有职工？Boss员工需要一个Boss*，<code>Manager</code>员工需要一个<code>Manager*</code>等</p>
+<p>跟上面类似，多态的作用：使用一个父类指针统一所有数据类型，父类指针可以指向所有子类对象</p>
+<p>所以可以使用new Worker*[5]，一个在堆区上的（可以在不同函数使用）父类指针数组，那用什么左值接收呢？答案是<code>worker**</code></p>
+<p><strong>遇到问题3</strong></p>
+<pre><code>void WorkManager::Add_Worker()
+&#123;
+    cout &lt;&lt; &quot;请输入增加职工的数量：&quot; &lt;&lt; endl;
+    int AddNums;
+    cin &gt;&gt; AddNums;
+
+    if (AddNums &gt; 0) 
+    &#123;
+        //计算新空间大小
+        int new_size = this-&gt;m_WorkNum + AddNums;
+
+        //开辟新空间
+        Worker** newapace = new Worker * [new_size];
+
+        //把旧数据转移到新开辟的空间
+        if (this-&gt;m_WorkNum != 0) &#123;
+            for (int i = 0; i &lt; this-&gt;m_WorkNum; i++) 
+            &#123;
+                this-&gt;m_WorkArray[i] = newapace[i];
+            &#125;
+        &#125;
+
+        //输入新数据
+        for (int i = 0; i &lt; AddNums; i++) &#123;
+            int id;
+            string name;
+            int dselect;//通过switch确定岗位
+
+            cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i + 1 &lt;&lt; &quot;个新职工编号:&quot; &lt;&lt; endl; 
+            cin &gt;&gt; id;
+            cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i + 1 &lt;&lt; &quot;个新职工姓名:&quot; &lt;&lt; endl;
+            cin &gt;&gt; name;
+
+            cout &lt;&lt; &quot;请选择该职工的岗位:&quot;&lt;&lt; endl;
+            cout &lt;&lt; &quot;1、普通职工&quot; &lt;&lt; endl;
+            cout &lt;&lt; &quot;2、经理&quot; &lt;&lt; endl;
+            cout &lt;&lt; &quot;3、老板&quot; &lt;&lt; endl;
+            cin &gt;&gt; dselect;
+
+            Worker* worker = NULL;
+            switch (dselect)
+            &#123;
+            case 1:
+                worker = new Employee(id, name, 1);
+                break;
+            case 2:
+                worker = new Manager(id, name, 2);
+                break;
+            case 3:
+                worker = new Boss(id, name, 3);
+                break;
+            default:
+                break;
+            &#125;
+            newapace[this-&gt;m_WorkNum + i] = worker;
+        &#125;
+
+        delete[] this-&gt;m_WorkArray;
+        this-&gt;m_WorkArray = newapace;
+        this-&gt;m_WorkNum = new_size;
+        
+        cout &lt;&lt; &quot;成功添加&quot; &lt;&lt; AddNums &lt;&lt; &quot;名新职工！&quot; &lt;&lt; endl;
+    &#125;
+    else
+    &#123;
+        cout &lt;&lt; &quot;输入有误&quot; &lt;&lt; endl;
+    &#125;
+&#125;
+</code></pre>
+<p>这里关于堆区内存的开辟，赋值，回收让我很迷惑，为什么创建完worker并复制给newspace管理，worker不需要delete，为什么d、this-&gt;m_WorkArray需要delete，为什么newspace在赋给this-&gt;m_WorkArray后不需要delete？</p>
+<p>按照第一节课的内容，因为new出来的数据放在堆区，而返回的指针（是局部变量）仍然是在栈区，会由操作系统自动释放。上述问题解释为worker指针（栈区）指向一个堆区的worker实例，赋值给newspace之后，newspace可以管理该实例了，如果此时delete worker，因为worker仍指向该实例，则堆区上的示例会被释放。下面的操作先释放this-&gt;m_WorkArray指向的堆区数据，但是该指针仍然存在并指向原来的地址（悬垂指针），然后把namespace指向的地址复制给<code>this-&gt;m_WorkArray</code>，完成更新。</p>
+<p>上述添加员工在程序结束后就不存在了，我们通过一个文件来保存，写文件基本操作：</p>
+<ol>
+<li><p>包含头文件<ofstream></p>
+</li>
+<li><p>创建流对象 <code>ofstream ofs;</code></p>
+</li>
+<li><p>打开文件ofs.open(“路径”, 打开方式)，多种打开方式用<code>|</code>操作</p>
+<p> ofs.open(FILENAME, ios::out);&#x2F;&#x2F;如果文件不存在，将会创建一个新文件。如果文件已存在，则打开文件，但文件的内容会被清空，写入操作将从文件的开始位置进行<br> ios::in&#x2F;&#x2F;读<br> ios::ate&#x2F;&#x2F;初始位置是文件尾,打开文件用于输出或输入。如果文件不存在，将会创建一个新文件。如果文件存在，打开文件，并将文件指针定位到文件的末尾。写入操作将从文件的末尾开始，但不会清空文件内容。<br> ios::app&#x2F;&#x2F;追加方式写文件,如果文件不存在，将会创建一个新文件。如果文件存在，打开文件，所有写入操作都会自动追加到文件的末尾，不会覆盖现有内容。<br> ios::trunc&#x2F;&#x2F;如果文件存在先删除，再创建<br> ios::binary&#x2F;&#x2F;二进制</p>
+</li>
+</ol>
+<p>读文件：因为上述所用的打开方式，在每次重新写时会删除清空内容重新写，并且在每次启动程序时我们也应该知道已有信息，所以要有读操作，把员工信息文件读出来并保存，修改后再重新save</p>
+<p>添加空文件标志位，并修改构造函数，应该分三种情况来初始化</p>
+<ul>
+<li>数据文件不存在(表明是第一次使用系统)，判断文件为空：<code>ifs.is_open()</code>，初始化要置<code>this-&gt;m_FileIsEmpty = true;</code></li>
+<li>文件存在且数据为空（清空过），判断文件不存在：<code>ifs&gt;&gt;ch;ifs.eof</code>，先读出一个字符，如果该字符为eof则文件为空，至于初始化内容与上述一样</li>
+<li>文件存在且有数据</li>
+</ul>
+<p>在save里置<code>this-&gt;m_FileIsEmpty = false;</code></p>
+<p><strong>问题四：</strong>程序健壮性问题，我们定义的<code>id,name,dId</code>都是有对应的格式，比如int数据输入字符程序可能会崩溃，后续应该考虑解决。</p>
+<p>初始化员工<code>Init_Worker()</code>：使用<code>get_WorkNums()</code>获取员工数量，并更新到成员变量中（该函数也是读取文件数据并计数得到），然后创建员工数组<code>this-&gt;m_WorkArray = new Worker * [this-&gt;m_WorkNum];</code>将文件内的数据按行读出，根据dId是1，2，3分别创建员工，经理，老板实例，并赋值给<code>this-&gt;m_WorkArray</code></p>
+<p>在构造函数中调用初始化，即可获得文件内保存的当前员工信息；</p>
+<p>在<code>WorkManager.h</code>实现显示员工信息，利用多态调用程序接口，worker类中声明了showinfo虚函数，在员工，经理，老板类中各自实现，在实际调用时会根据实例的不同，调用各自的显示函数</p>
+<p>根据编号删除职工功能：首先需要判断是否存在该职工，所以需要一个函数<code>IsExist</code>来来判断是否存在，存在的话返回索引，不存在返回-1</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -660,204 +858,6 @@ int main(void) &#123;
 <li>释放动态数据必须用<code>delete[]</code>，使用智能指针管理动态数组时也必须指定时数组，例如<code>unique_ptr&lt;int []&gt;</code>，才能正确释放内存，并且此时<code>.</code>，<code>-&gt;</code>的操作也没有意义，与普通指针类似使用up[i]来访问数组元素。</li>
 <li>shared_ptr不支持管理动态数组，若使用则需要自定义一个删除器，并且shared_ptr没有[]操作，无法访问数组元素，此时若想访问数组元素，则需要使用get()来获取该地址的一个普通指针（注意只使用该指针，不要delete或者使用该指针的值初始化其他指针）</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/13/%E5%A4%9A%E6%80%81%E8%81%8C%E5%B7%A5%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Song Wei">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Song Wei's blog!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/13/%E5%A4%9A%E6%80%81%E8%81%8C%E5%B7%A5%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">多态职工管理系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-03-13 22:08:57" itemprop="dateCreated datePublished" datetime="2025-03-13T22:08:57+08:00">2025-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 19:46:39" itemprop="dateModified" datetime="2025-03-27T19:46:39+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>首先创建文件</p>
-<p>创建主程序和要实现的类<code>WorkManager</code>，在头文件中声明要包含的文件，防止重复包含<code>的#pragma once</code>等等，然后创建构造和析构函数，再写出对外提供的接口<code>Show_Menu</code>，并在cpp中写出相应的空实现。</p>
-<p><strong>遇到问题1：</strong>代码无错误，但是调试时报错，通过清理解决方案解决。<br>生成开始于 20:52…<br>1&gt;—— 已启动生成: 项目: 多态职工管理系统, 配置: Debug x64 ——<br>1&gt;LINK : fatal error LNK1168: 无法打开 C:\Users\12780\Desktop\c++基础小玩意\多态职工管理系统\x64\Debug\多态职工管理系统.exe 进行写入<br>1&gt;已完成生成项目“多态职工管理系统.vcxproj”的操作 - 失败。</p>
-<p>6.1 创建职工抽象类<br>职工的分类为:普通员工、经理、老板将三种职工抽象到一个类(worker)中,利用多态管理不同职工种类职工的属性为:职工编号、职工姓名、职工所在部门编号职工的行为为:岗位职责信息描述，获取岗位名称</p>
-<p><strong>遇到问题2</strong>：“worker”: 重定义；多次初始化</p>
-<pre><code>void test()
-&#123;
-    Worker* worker = NULL;
-    worker = new Employee(1, &quot;张三&quot;, 1);
-    worker-&gt;ShowInfo();
-    delete worker;
-
-
-    worker = new Manager(1, &quot;张三&quot;, 1);
-    worker-&gt;ShowInfo();
-    delete worker;
-
-
-    worker = new Boss(1, &quot;张三&quot;, 1);
-    worker-&gt;ShowInfo();
-    delete worker;
-    work = NULL;
-&#125;
-</code></pre>
-<p>使用 delete 操作符后，worker 指针所指向的动态分配的内存被释放了。这意味着 worker 成为了一个“悬垂指针”（dangling pointer），它指向的内存现在可能包含垃圾数据或者已经被操作系统重新分配给了其他用途。</p>
-<p>在代码中，尽管 delete 被调用了，<strong>但 worker 指针本身并没有被改变，它仍然存储着之前分配内存的地址</strong>。这就是为什么你可以在 delete 之后继续给 worker 赋予新的值，并且它似乎仍然可以“工作”。实际上，每次 delete 之后，你应该立即将 worker 设置为 NULL，这样可以避免悬垂指针的问题。</p>
-<p>上述代码也是多态的作用</p>
-<h2 id="添加职工"><a href="#添加职工" class="headerlink" title="添加职工"></a>添加职工</h2><p>每个职工的身份不同，如何使用一个数组存储所有职工？Boss员工需要一个Boss*，<code>Manager</code>员工需要一个<code>Manager*</code>等</p>
-<p>跟上面类似，多态的作用：使用一个父类指针统一所有数据类型，父类指针可以指向所有子类对象</p>
-<p>所以可以使用new Worker*[5]，一个在堆区上的（可以在不同函数使用）父类指针数组，那用什么左值接收呢？答案是<code>worker**</code></p>
-<p><strong>遇到问题3</strong></p>
-<pre><code>void WorkManager::Add_Worker()
-&#123;
-    cout &lt;&lt; &quot;请输入增加职工的数量：&quot; &lt;&lt; endl;
-    int AddNums;
-    cin &gt;&gt; AddNums;
-
-    if (AddNums &gt; 0) 
-    &#123;
-        //计算新空间大小
-        int new_size = this-&gt;m_WorkNum + AddNums;
-
-        //开辟新空间
-        Worker** newapace = new Worker * [new_size];
-
-        //把旧数据转移到新开辟的空间
-        if (this-&gt;m_WorkNum != 0) &#123;
-            for (int i = 0; i &lt; this-&gt;m_WorkNum; i++) 
-            &#123;
-                this-&gt;m_WorkArray[i] = newapace[i];
-            &#125;
-        &#125;
-
-        //输入新数据
-        for (int i = 0; i &lt; AddNums; i++) &#123;
-            int id;
-            string name;
-            int dselect;//通过switch确定岗位
-
-            cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i + 1 &lt;&lt; &quot;个新职工编号:&quot; &lt;&lt; endl; 
-            cin &gt;&gt; id;
-            cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i + 1 &lt;&lt; &quot;个新职工姓名:&quot; &lt;&lt; endl;
-            cin &gt;&gt; name;
-
-            cout &lt;&lt; &quot;请选择该职工的岗位:&quot;&lt;&lt; endl;
-            cout &lt;&lt; &quot;1、普通职工&quot; &lt;&lt; endl;
-            cout &lt;&lt; &quot;2、经理&quot; &lt;&lt; endl;
-            cout &lt;&lt; &quot;3、老板&quot; &lt;&lt; endl;
-            cin &gt;&gt; dselect;
-
-            Worker* worker = NULL;
-            switch (dselect)
-            &#123;
-            case 1:
-                worker = new Employee(id, name, 1);
-                break;
-            case 2:
-                worker = new Manager(id, name, 2);
-                break;
-            case 3:
-                worker = new Boss(id, name, 3);
-                break;
-            default:
-                break;
-            &#125;
-            newapace[this-&gt;m_WorkNum + i] = worker;
-        &#125;
-
-        delete[] this-&gt;m_WorkArray;
-        this-&gt;m_WorkArray = newapace;
-        this-&gt;m_WorkNum = new_size;
-        
-        cout &lt;&lt; &quot;成功添加&quot; &lt;&lt; AddNums &lt;&lt; &quot;名新职工！&quot; &lt;&lt; endl;
-    &#125;
-    else
-    &#123;
-        cout &lt;&lt; &quot;输入有误&quot; &lt;&lt; endl;
-    &#125;
-&#125;
-</code></pre>
-<p>这里关于堆区内存的开辟，赋值，回收让我很迷惑，为什么创建完worker并复制给newspace管理，worker不需要delete，为什么d、this-&gt;m_WorkArray需要delete，为什么newspace在赋给this-&gt;m_WorkArray后不需要delete？</p>
-<p>按照第一节课的内容，因为new出来的数据放在堆区，而返回的指针（是局部变量）仍然是在栈区，会由操作系统自动释放。上述问题解释为worker指针（栈区）指向一个堆区的worker实例，赋值给newspace之后，newspace可以管理该实例了，如果此时delete worker，因为worker仍指向该实例，则堆区上的示例会被释放。下面的操作先释放this-&gt;m_WorkArray指向的堆区数据，但是该指针仍然存在并指向原来的地址（悬垂指针），然后把namespace指向的地址复制给<code>this-&gt;m_WorkArray</code>，完成更新。</p>
-<p>上述添加员工在程序结束后就不存在了，我们通过一个文件来保存，写文件基本操作：</p>
-<ol>
-<li><p>包含头文件<ofstream></p>
-</li>
-<li><p>创建流对象 <code>ofstream ofs;</code></p>
-</li>
-<li><p>打开文件ofs.open(“路径”, 打开方式)，多种打开方式用<code>|</code>操作</p>
-<p> ofs.open(FILENAME, ios::out);&#x2F;&#x2F;如果文件不存在，将会创建一个新文件。如果文件已存在，则打开文件，但文件的内容会被清空，写入操作将从文件的开始位置进行<br> ios::in&#x2F;&#x2F;读<br> ios::ate&#x2F;&#x2F;初始位置是文件尾,打开文件用于输出或输入。如果文件不存在，将会创建一个新文件。如果文件存在，打开文件，并将文件指针定位到文件的末尾。写入操作将从文件的末尾开始，但不会清空文件内容。<br> ios::app&#x2F;&#x2F;追加方式写文件,如果文件不存在，将会创建一个新文件。如果文件存在，打开文件，所有写入操作都会自动追加到文件的末尾，不会覆盖现有内容。<br> ios::trunc&#x2F;&#x2F;如果文件存在先删除，再创建<br> ios::binary&#x2F;&#x2F;二进制</p>
-</li>
-</ol>
-<p>读文件：因为上述所用的打开方式，在每次重新写时会删除清空内容重新写，并且在每次启动程序时我们也应该知道已有信息，所以要有读操作，把员工信息文件读出来并保存，修改后再重新save</p>
-<p>添加空文件标志位，并修改构造函数，应该分三种情况来初始化</p>
-<ul>
-<li>数据文件不存在(表明是第一次使用系统)，判断文件为空：<code>ifs.is_open()</code>，初始化要置<code>this-&gt;m_FileIsEmpty = true;</code></li>
-<li>文件存在且数据为空（清空过），判断文件不存在：<code>ifs&gt;&gt;ch;ifs.eof</code>，先读出一个字符，如果该字符为eof则文件为空，至于初始化内容与上述一样</li>
-<li>文件存在且有数据</li>
-</ul>
-<p>在save里置<code>this-&gt;m_FileIsEmpty = false;</code></p>
-<p><strong>问题四：</strong>程序健壮性问题，我们定义的<code>id,name,dId</code>都是有对应的格式，比如int数据输入字符程序可能会崩溃，后续应该考虑解决。</p>
-<p>初始化员工<code>Init_Worker()</code>：使用<code>get_WorkNums()</code>获取员工数量，并更新到成员变量中（该函数也是读取文件数据并计数得到），然后创建员工数组<code>this-&gt;m_WorkArray = new Worker * [this-&gt;m_WorkNum];</code>将文件内的数据按行读出，根据dId是1，2，3分别创建员工，经理，老板实例，并赋值给<code>this-&gt;m_WorkArray</code></p>
-<p>在构造函数中调用初始化，即可获得文件内保存的当前员工信息；</p>
-<p>在<code>WorkManager.h</code>实现显示员工信息，利用多态调用程序接口，worker类中声明了showinfo虚函数，在员工，经理，老板类中各自实现，在实际调用时会根据实例的不同，调用各自的显示函数</p>
-<p>根据编号删除职工功能：首先需要判断是否存在该职工，所以需要一个函数<code>IsExist</code>来来判断是否存在，存在的话返回索引，不存在返回-1</p>
 
       
     </div>
