@@ -151,6 +151,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/29/STL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/29/STL/" class="post-title-link" itemprop="url">STL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-29 14:16:25 / 修改时间：20:28:37" itemprop="dateCreated datePublished" datetime="2025-04-29T14:16:25+08:00">2025-04-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>STL(Standard Template Library，标准模板库)，STL的从广义上讲分为三类:algorithm(算法)、container(容器)和iterator(迭代器)，容器和算法通过迭代器可以进行无缝地连接。几乎所有的代码都采用了模板类和模板函数的方式，这相比于传统的由函数和类组成的库来说提供了更好的代码重用机会。在C++标准中，STL被组织为下面的13个头文件:</p>
+<p><algorithm>、<deque>、<functiona1>、<iterator>、<vector>、<list>、<map>、<memory><set><stack><numeric>、<queue>、和<utility>。</p>
+<p>好处：</p>
+<ol>
+<li>STL是C++的一部分，因此不用额外安装什么，它被内建在你的编译器之内。</li>
+<li>STL的一个重要特点是数据结构和算法的分离。尽管这是个简单的概念，但是这种分离确实使得STL变得非常通用。</li>
+<li>程序员可以不用思考STL具体的实现过程，只要能够熟练使用STL就OK了</li>
+<li>STL具有高可重用性，高性能，高移植性，跨平台的优点。</li>
+</ol>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><ol>
+<li>序列式容量<ul>
+<li>元素位置取决于插入时机，与元素值无关</li>
+<li>vector、deque、list、stack、queue</li>
+</ul>
+</li>
+<li>关联式容器<ul>
+<li>元素位置取决于特定的排序准则，和插入顺序无关</li>
+<li>set、multiset、map、multimap</li>
+</ul>
+</li>
+</ol>
+<h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><h3 id="容器简介"><a href="#容器简介" class="headerlink" title="容器简介"></a>容器简介</h3><ul>
+<li>vector是将元素置于一个动态数组中加以管理的容器。</li>
+<li>vector可以随机存取元素(支持索引值直接存取，用[操作符或at()方法，这个等下会详讲)</li>
+<li>vector尾部添加或移除元素非常快速。但是在中部或头部插入元素或移除元素比较费时</li>
+</ul>
+<h3 id="默认构造"><a href="#默认构造" class="headerlink" title="默认构造"></a>默认构造</h3><p>vector&lt;数据类型&gt; name;</p>
+<h3 id="带参构造"><a href="#带参构造" class="headerlink" title="带参构造"></a>带参构造</h3><ol>
+<li>vector<int> name(begin, end);begin end 是一个数组的两个指针，左闭右开，可以取到 begin 到 end - 1 的元素。</li>
+<li>常用，vector<int> name(n, val);构造n个val</li>
+<li>拷贝构造:vector(const vector &amp;vec);传一个容器对象，例如 vector<int> v2(v1);vector<int> v3 &#x3D; v2;</li>
+</ol>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><ol>
+<li>vector.assign(beq,end); &#x2F;&#x2F;将[beg,end)区间中的数据拷贝赋值给本身。注意该区间是左闭右开的区间。</li>
+<li>vector.assign(n,elem);&#x2F;&#x2F;将n个elem拷贝赋值给本身。</li>
+<li>vector&amp; operator&#x3D;(const vector &amp;vec); &#x2F;&#x2F;重载等号操作符</li>
+<li>vector.swap(vec); &#x2F;&#x2F;将vec与本身的元素互换。</li>
+</ol>
+<p>assign会先清空原有元素，再赋值</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Song Wei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Song Wei's blog!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/27/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">面向对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-27 20:52:01 / 修改时间：21:28:32" itemprop="dateCreated datePublished" datetime="2025-04-27T20:52:01+08:00">2025-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/19/C-%E5%8D%8F%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1056,7 +1220,7 @@ int main(void) &#123;
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-19 18:38:13" itemprop="dateModified" datetime="2025-04-19T18:38:13+08:00">2025-04-19</time>
+                <time title="修改时间：2025-04-25 08:53:50" itemprop="dateModified" datetime="2025-04-25T08:53:50+08:00">2025-04-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1440,8 +1604,50 @@ int main(void) &#123;
 <p>一个误区：</p>
 <p>上述 isSame 和 join 看着有重复的代码，是否可以简写为</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断 u 和 v是否找到同一个根</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isSame</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span> </span>&#123;</span><br><span class="line">    u = <span class="built_in">find</span>(u);</span><br><span class="line">    v = <span class="built_in">find</span>(v);</span><br><span class="line">    <span class="keyword">return</span> u == v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将v-&gt;u 这条边加入并查集</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">join</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isSame</span>(u, v)) <span class="keyword">return</span> ; <span class="comment">// 如果发现根相同，则说明在一个集合，不用两个节点相连直接返回</span></span><br><span class="line">    father[v] = u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实是不对的，假如执行 join(1, 2) 和 join(3, 2)，按照上述写法，father[2] &#x3D; 1，father[3] &#x3D; 1，这时isSame(1, 3)，find(1) 返回的是1，find(3)返回的是3。 return 1 &#x3D;&#x3D; 3 返回的是false，代码告诉我们 1 和 3 不在同一个集合，这肯定是不对的。<br><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%B9%B6%E6%9F%A5%E9%9B%86%E8%AF%AF%E5%8C%BA1.png"><br>问题出在每次join的时候都要先找到根，正确过程是 join(1, 2)后 father[2] &#x3D; 1，join(3, 2) 时先找到 2 的根是1，再执行 father[1] &#x3D; 3，这样 isSame(1, 3) find(1) 返回的是1 find(3)返回的是也是 1。</p>
-
+<p>其实是不对的，假如执行 join(1, 2) 和 join(3, 2)，按照上述写法，father[2] &#x3D; 1，father[2] &#x3D; 3，这时isSame(1, 3)，find(1) 返回的是1，find(3)返回的是3。 return 1 &#x3D;&#x3D; 3 返回的是false，代码告诉我们 1 和 3 不在同一个集合，这肯定是不对的。<br><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%B9%B6%E6%9F%A5%E9%9B%86%E8%AF%AF%E5%8C%BA1.png"><br>问题出在每次join的时候都要先找到根，正确过程是 join(1, 2)后 father[2] &#x3D; 1，join(3, 2) 时先找到 2 的根是1，再执行 father[1] &#x3D; 3，这样 isSame(1, 3) find(1) 返回的是1 find(3)返回的是也是 1。<br><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%B9%B6%E6%9F%A5%E9%9B%86-%E8%AF%AF%E5%8C%BA2.png"></p>
+<h3 id="rank合并"><a href="#rank合并" class="headerlink" title="rank合并"></a>rank合并</h3><p>rank表示树的高度，除了路径压缩</p>
+<h2 id="107-寻找存在的路径"><a href="#107-寻找存在的路径" class="headerlink" title="107. 寻找存在的路径"></a>107. 寻找存在的路径</h2><p>给定一个包含 n 个节点的无向图中，节点编号从 1 到 n （含 1 和 n ）。</p>
+<p>你的任务是判断是否有一条从节点 source 出发到节点 destination 的路径存在。</p>
+<p>并查集解决<strong>两个节点在不在一个集合，也可以将两个节点添加到一个集合中</strong>；</p>
+<p>对于该题，如果两点之间存在边，就认为他们在一个集合中，所以只需要将所有边加入，最后判断给出的点是否在一个集合里，在一个集合则两点之间必然有路，反之则无。</p>
+<h2 id="108-冗余连接"><a href="#108-冗余连接" class="headerlink" title="108. 冗余连接"></a>108. 冗余连接</h2><p>n 个节点的无向无环连通图，加一条边出现环，找出冗余边，删除该边该图仍然可成树。</p>
+<p>使用并查集思路是，在join每一条边时，判断两个节点 A,B 是否在同一个集合，如果不在则 join，如果已经在同一个集合加入一定会出现环。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">farther</span><span class="params">(<span class="number">1001</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        farther[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> u == farther[u] ? u : farther[u] = <span class="built_in">find</span>(farther[u]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">join</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    u = <span class="built_in">find</span>(u);</span><br><span class="line">    v = <span class="built_in">find</span>(v);</span><br><span class="line">    <span class="keyword">if</span>(u == v) <span class="keyword">return</span>;</span><br><span class="line">    farther[v] = u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isSame</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    u = <span class="built_in">find</span>(u);</span><br><span class="line">    v = <span class="built_in">find</span>(v);</span><br><span class="line">    <span class="keyword">return</span> u == v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="built_in">Init</span>();</span><br><span class="line">    <span class="type">int</span> s, t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; s &gt;&gt; t;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isSame</span>(s, t)) &#123;</span><br><span class="line">            cout &lt;&lt; s &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; t;<span class="comment">//出现环了则一定是最后一条边</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">join</span>(s, t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="冗余连接II"><a href="#冗余连接II" class="headerlink" title="冗余连接II"></a>冗余连接II</h2><p>有一个有向图，是由一颗有向树 + 一条有向边组成的 （所以此时这个图就不能称之为有向树），现在让我们找到那条边 把这条边删了，让这个图恢复为有向树。</p>
+<p>分为这几种情况：</p>
+<ol>
+<li>有度为 2 的节点，删除一条边即可，具体是删后加入的边</li>
+</ol>
+<p><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A52-1.png"></p>
+<ol start="2">
+<li>有度为 2 的边，但是只能删其中一条，所以需要一个函数来<strong>判断删除某条边后还是不是树</strong></li>
+</ol>
+<p><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A52-2.png"></p>
+<ol start="3">
+<li>没有度为2的边，但是有环，<strong>删除掉构成环的边也需要一个函数</strong></li>
+</ol>
+<p><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A52-3.png"></p>
+<p>终点就是上面两个函数的实现，我们要判断删除掉某条边之后是不是树，则将所有边都加入并查集，遇到要删除的边跳过，如果有环<code>return false</code>，如果将所有边顺利的加入了并查集，则说明该边删除后还是树。</p>
+<p>要删除构成环的最后一条边也是使用并查集，将所有边都加入，如果该边的两点已经在集合里了<code>isSame(edge[0], edge[1]) == true</code>，则该边就是构成环的边，返回该条边即可</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">farther</span><span class="params">(<span class="number">1001</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        farther[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> u == farther[u] ? u : farther[u] = <span class="built_in">find</span>(farther[u]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">join</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    u = <span class="built_in">find</span>(u);</span><br><span class="line">    v = <span class="built_in">find</span>(v);</span><br><span class="line">    <span class="keyword">if</span>(u == v) <span class="keyword">return</span>;</span><br><span class="line">    farther[v] = u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isSame</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    u = <span class="built_in">find</span>(u);</span><br><span class="line">    v = <span class="built_in">find</span>(v);</span><br><span class="line">    <span class="keyword">return</span> u == v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">getRemoveEdge</span><span class="params">(<span class="type">const</span> vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; edges)</span></span>&#123;</span><br><span class="line">    <span class="built_in">Init</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isSame</span>(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>]))&#123;</span><br><span class="line">            cout &lt;&lt; edges[i][<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; edges[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">join</span>(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isTreeAfterRemoveEdge</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; edges, <span class="type">int</span> key)</span></span>&#123;</span><br><span class="line">    <span class="built_in">Init</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == key) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isSame</span>(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>]))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">join</span>(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="type">int</span> s, t;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; edges;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">inDegree</span><span class="params">(n + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; s &gt;&gt; t;</span><br><span class="line">        edges.<span class="built_in">push_back</span>(&#123;s, t&#125;);</span><br><span class="line">        inDegree[t]++;</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; vec;<span class="comment">//存储度为2的点，如果有多个，存储最后一条</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">        <span class="comment">//判断每条边的第二个节点，并不是直接遍历inDegree，目的是找到度为2的边在edges里的索引，遍历inDegree只能得到是哪个节点，无法知道是哪条边</span></span><br><span class="line">        <span class="keyword">if</span>(inDegree[edges[i][<span class="number">1</span>]] == <span class="number">2</span>)&#123;</span><br><span class="line">            vec.<span class="built_in">push_back</span>(i);<span class="comment">//该节点的度为2，将该条边的索引加入</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(vec.<span class="built_in">size</span>() &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isTreeAfterRemoveEdge</span>(edges, vec[<span class="number">0</span>]))</span><br><span class="line">            cout &lt;&lt; edges[vec[<span class="number">0</span>]][<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; edges[vec[<span class="number">0</span>]][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cout &lt;&lt; edges[vec[<span class="number">1</span>]][<span class="number">0</span>] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; edges[vec[<span class="number">1</span>]][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">getRemoveEdge</span>(edges);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="prim算法（最小生成树）"><a href="#prim算法（最小生成树）" class="headerlink" title="prim算法（最小生成树）"></a>prim算法（最小生成树）</h2><p>有 n 个节点，使用 n - 1 个节点一定可以将它们连通，但是要保证权值最小。</p>
+<p>prim 算法是节点的贪心角度出发，每次寻找离当前最小生成树最近（权值最小）的节点加入：</p>
+<ul>
+<li>第一步，选距离生成树最近节点</li>
+<li>第二步，最近节点加入生成树</li>
+<li>第三步，更新非生成树节点到生成树的距离（即更新minDist数组）<br>所以计算和更新 minDist 就是关键</li>
+</ul>
+<p>首先选取一个点作为最小生成树的起点，然后更新 minDist 中与该点相连的点的最小距离，然后选权值最小的点加入最小生成树，再更新 minDist 中与该点相连的点的最小距离…</p>
+<p>直到所有点都加入后， minDist 中保存的就是该树各边权值</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;climits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> v, e;</span><br><span class="line">    cin &gt;&gt; v &gt;&gt; e;</span><br><span class="line">    <span class="type">int</span> x, y, z;</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">grid</span>(v + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(v + <span class="number">1</span>, <span class="number">10001</span>));</span><br><span class="line">    <span class="keyword">while</span>(e--)&#123;</span><br><span class="line">        cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;</span><br><span class="line">        grid[x][y] = z;</span><br><span class="line">        grid[y][x] = z;<span class="comment">//无向，所以添加双向边</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">minDist</span><span class="params">(v + <span class="number">1</span>, <span class="number">10001</span>)</span></span>;<span class="comment">//距离生成树最小距离</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">bool</span>&gt; <span class="title">vec</span><span class="params">(v + <span class="number">1</span>, <span class="literal">false</span>)</span></span>;<span class="comment">//是否在生成树内</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; v; i++)&#123;<span class="comment">//n-1 次循环选出 n-1 条边</span></span><br><span class="line">        <span class="type">int</span> cur = <span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> minVal = INT_MAX;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历找到当前权值最小的点，加入</span></span><br><span class="line">        <span class="comment">//条件1：不在最小生成树内 2：当前权值最小</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= v; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vec[j] &amp;&amp; minDist[j] &lt; minVal)&#123;</span><br><span class="line">                minVal = minDist[j];</span><br><span class="line">                cur = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        vec[cur] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//更新与新节点相连的点，要求不在树内并且到新节点的距离比之前更小</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= v; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vec[j] &amp;&amp; grid[cur][j] &lt; minDist[j])&#123;<span class="comment">//自己写时这个循环 j 和 cur 写混导致错误</span></span><br><span class="line">                minDist[j] = grid[cur][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= v; i++)&#123;</span><br><span class="line">        result += minDist[i];</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; result;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>给出一个 有向图，把这个有向图转成线性的排序 就叫拓扑排序。</p>
+<p>当然拓扑排序也要检测这个有向图 是否有环，即存在循环依赖的情况，因为这种情况是不能做线性排序的。<br><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F.png"><br>0 不依赖任何节点，它的入度是 0，出度是 2。拓扑排序过程就是这样：</p>
+<ul>
+<li>找到入度为0 的节点，加入结果集</li>
+<li>将该节点从图中移除<br><img src="/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%8B%93%E6%89%91-%E7%8E%AF.png"></li>
+</ul>
+<p>还剩下一个问题就是如何判断循环依赖（环），当没有入度为0的节点，并且图中还有节点（或结果集里没有收集到所有节点）则是有环。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n, m, x, y;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">indegree</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    unordered_map&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;&gt; umap;<span class="comment">//保存依赖关系，节点为索引，可能指向多各节点，用数组保存</span></span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; result;</span><br><span class="line">    <span class="keyword">while</span>(m--)&#123;</span><br><span class="line">        cin &gt;&gt; x &gt;&gt; y;</span><br><span class="line">        indegree[y]++;</span><br><span class="line">        umap[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">    &#125;</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt; que;<span class="comment">//有多个入度为0的节点，用队列处理</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(indegree[i] == <span class="number">0</span>) que.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(que.<span class="built_in">size</span>())&#123;</span><br><span class="line">        <span class="type">int</span> cur = que.<span class="built_in">front</span>();</span><br><span class="line">        result.<span class="built_in">push_back</span>(cur);</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : umap[cur])&#123;</span><br><span class="line">            indegree[i]--;</span><br><span class="line">            <span class="keyword">if</span>(indegree[i] == <span class="number">0</span>) que.<span class="built_in">push</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(result.<span class="built_in">size</span>() != n)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) cout &lt;&lt; result[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        cout &lt;&lt; result[n - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -1631,159 +1837,6 @@ int main(void) &#123;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/18/Linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Song Wei">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Song Wei's blog!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/18/Linux/" class="post-title-link" itemprop="url">Linux</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-01-18 22:23:21" itemprop="dateCreated datePublished" datetime="2025-01-18T22:23:21+08:00">2025-01-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-31 19:54:51" itemprop="dateModified" datetime="2025-03-31T19:54:51+08:00">2025-03-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ubantu默认分区"><a href="#ubantu默认分区" class="headerlink" title="ubantu默认分区"></a>ubantu默认分区</h1><p><img src="/image-1.png" alt="alt text"><br>分为3个区</p>
-<ol>
-<li>挂载点&#x2F;；主分区；安装系统和软件；大小为30G；分区格式为ext4；</li>
-<li>挂载点&#x2F;home；逻辑分区；相当于“我的文档”；大小为硬盘剩下的; 分区格式ext4；</li>
-<li>swap；逻辑分区；充当<em>虚拟内存</em>；大小等于内存大小（本人2G）；分区格式为swap（1.我们知道cpu所对去的数据都来自于内存，那么内存不足的时候，为了让后续的程序可以顺利运行，需要将暂时不使用的程序与数据都挪到内存交换分区中，此时内存就会空出一部分空间来给需要执行的程序加载 。<br>2.当系统的物理内存不够用的时候，系统会将长时间没有操作的进程占用的物理内存空间释放出来，以供当前运行的程序使用。而被释放的空间会被临时保存到交换（Swap）分区中，等到那些程序要运行时，再从Swap分区中恢复保存的数据到内存中。如果Swap被用尽，将会发生系统错误。</li>
-<li>&#x2F;boot ；引导分区；逻辑分区； 大小为200M ；分区格式为ext4；</li>
-</ol>
-<p>这篇文章对linux分区介绍的很不错<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/Alvern_Zhang/article/details/48392895">https://blog.csdn.net/Alvern_Zhang/article/details/48392895</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/12/%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Song Wei">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Song Wei's blog!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/12/%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B/" class="post-title-link" itemprop="url">进程、线程、协程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-01-12 21:01:33" itemprop="dateCreated datePublished" datetime="2025-01-12T21:01:33+08:00">2025-01-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-14 22:21:38" itemprop="dateModified" datetime="2025-04-14T22:21:38+08:00">2025-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>代码只是存储在磁盘的静态文件，通过编译后就会生成二进制可执行文件，当我们运行这个可执行文件后，它会被装载到内存中，接着CPU 会执行程序中的每一条指令，那么这个运行中的程序，就被称为「进程」(Process)。</p>
-<p>进程是操作系统分配资源的基本单位，进程的上下文包括</p>
-<p>当进程阻塞，例如从硬盘上读取数据时，</p>
-<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>线程是进程中的执行体，拥有一个执行入口以及从进程虚拟地址空间中分配的栈，包括用户栈和内核栈，操作系统会记录线程控制信息，线程在获得时间片后才可以执行。</p>
-<p>同一进程内的线程切换不需要切换虚拟地址空间，只需要切换cpu寄存器的上下文和少量资源管理上下文。</p>
-<p>如果线程又创建几个执行体，给它们各自指定入口，并分配一切内存给它们用作执行栈，那么线程就可以按需调度这几个执行体了。为了实现这些执行体的切换，线程需要记录协程的控制信息，包括：标识符id、执行栈位置、执行入口、执行现场，</p>
-<p>用户程序不能操纵内核空间，所以只能给协程分配用户栈，os不知道协程的存在，所以协程被称为用户态线程。</p>
-<p>windows</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1853,7 +1906,7 @@ int main(void) &#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1862,6 +1915,10 @@ int main(void) &#123;
           
         <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
